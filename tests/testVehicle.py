@@ -41,10 +41,10 @@ class TestVehicle:
         with allure.step('Загрузки страницы добавления ТС'):
             while not vehicle.get_wait_load_dom_add():
                 sleep(1)
-        with allure.step('марка'):
-            vehicle.get_mark().send_keys('robot')
+        with allure.step('Марка по ПТС'):
+            vehicle.get__input('Марка по ПТС').send_keys('robot')
         with allure.step('модель'):
-            vehicle.get_model().send_keys('manual')
+            vehicle.get__input('Модель по ПТС').send_keys('manual')
         with allure.step('категория'):
             vehicle.get_cat_section().click()
             sleep(1)
@@ -54,19 +54,21 @@ class TestVehicle:
             sleep(1)
             vehicle.get_vehicle_type().click()
         with allure.step('Мощность'):
-            vehicle.get_power().send_keys('250')
-        with allure.step('год'):
+            vehicle.get__input('Мощность').send_keys('250')
+        with allure.step('Год выпуска'):
             current_day = datetime.now()
-            vehicle.get_year().send_keys(current_day.year)
-        with allure.step('vin'):
+            vehicle.get__input('Год выпуска').send_keys(current_day.year)
+        with allure.step('VIN'):
             VIN = choices(config.str_vin, k=17)
-            vehicle.get_vin().send_keys(VIN)
+            vehicle.get__input('VIN').send_keys(VIN)
         with allure.step('Закрытие раздела ТС'):
-            vehicle.get_vehicle_section().click()
+            vehicle.get_accardion_chapter("Транспортное средство").click()
         with allure.step('Открытие раздела докумаент на  ТС'):
-            vehicle.get_doc_section().click()
+            vehicle.get_accardion_chapter("Документ на ТС").click()
         with allure.step('тип документа'):
             vehicle.get_doc_type_section().click()
+            sleep(1)
+            vehicle.get_find().send_keys('Паспорт ТС \n')
             sleep(1)
             vehicle.get_doc_type().click()
         with allure.step('Серия документа о регистрации'):
@@ -110,5 +112,5 @@ class TestVehicle:
         sleep(1)
         with allure.step('загрузка файла'):
             vehicle.get_close().click()
-           # vehicle.get_uploader().send_keys('C:\suburb.xlsx')
+        # vehicle.get_uploader().send_keys('C:\suburb.xlsx')
         sleep(10)

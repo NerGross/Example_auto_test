@@ -1,0 +1,7 @@
+/.pytest_cache
+/img
+/report
+/venv
+config.py
+__init__.py
+/.idea

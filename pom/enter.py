@@ -10,8 +10,8 @@ class Enter(SeleniumBase):
         self.__password: str = 'input[name="password"]'
         self.__button_enter: str = 'button[type="submit"]'
         self.__employee_list: str = '/html/body/div[4]/div/div/div/div[1]/div/ul/li[1]'
-        self.__menu_item: str = '//*[@id="sgb2b"]/div/nav/div[3]/div/div/div[2]/div[1]/p'
-        self.__menu_item_child: str = '//*[@id="sgb2b"]/div/nav/div[3]/div/div/div[2]/div[2]/a/p'
+        self.__menu_item: str = '//p[text()="Объекты страхования"]'
+        self.__menu_item_child: str = '//p[text()="Транспортные средства"]'
 
     # поле логин
     def get_login(self) -> WebElement:
@@ -36,7 +36,7 @@ class Enter(SeleniumBase):
     # подменю "Транспортное средство"
     def get_menu_item_child(self) -> WebElement:
         return self.is_visible('xpath', self.__menu_item_child, 'menu_item_child') \
-
+ \
     # проверка о загрузке страницы
     def get_wait_load_dom(self):
         if self.driver.execute_script("return document.readyState") == "complete":

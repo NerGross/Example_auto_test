@@ -8,19 +8,16 @@ class Vehicle(SeleniumBase):
         super().__init__(driver)
         # ТС
         self.__button_add_vehicle: str = '//*[@id="sgb2b"]/div/div/div[1]/div[3]/div[1]/button[2]'
-        self.__mark: str = '//*[@id="vehicle-form"]/div[1]/div[2]/div/div[2]/label/span[2]/input'
-        self.__model: str = '//*[@id="vehicle-form"]/div[1]/div[2]/div/div[3]/label/span[2]/input'
+        self.__find: str = '//input[@placeholder="Поиск"]'
+        self.__accordion_chapter: str = '//div[text()="{0}"]'
+        self.__input: str = '//span[contains(text(),"{}")]/parent::label//span//input'
+        # старые
         self.__cat_section: str = '//*[@id="vehicle-form"]/div[1]/div[2]/div/div[5]/div[1]/div'
-        self.__cat: str = '//*[@id="vehicle-form"]/div[1]/div[2]/div/div[5]/div[1]/div/div[2]/div[2]/div/div[2]/div/span'
+        self.__cat: str = '//span[text()="B"]'
         self.__type_vehicle_section: str = '//*[@id="vehicle-form"]/div[1]/div[2]/div/div[5]/div[2]/div'
-        self.__type_vehicle: str = '//*[@id="vehicle-form"]/div[1]/div[2]/div/div[5]/div[2]/div/div[2]/div[2]/div/div[2]/div/span'
-        self.__power: str = '//*[@id="vehicle-form"]/div[1]/div[2]/div/div[6]/label[1]/span[2]/input'
-        self.__year: str = '//*[@id="vehicle-form"]/div[1]/div[2]/div/div[7]/label[2]/span[2]/input'
-        self.__vin: str = '//*[@id="vehicle-form"]/div[1]/div[2]/div/div[9]/label[1]/span[2]/input'
-        self.__vehicle_section: str = '//*[@id="vehicle-form"]/div[1]/div[1]'
-        self.__doc_section = '//*[@id="vehicle-form"]/div[4]/div[1]'
+        self.__type_vehicle: str = '//span[text()="Легковой"]'
         self.__doc_type_section: str = '/html/body/div[1]/div/div/main/div/form/div[4]/div[2]/div/div[1]/div[1]/div'
-        self.__doc_type: str = '//*[@id="vehicle-form"]/div[4]/div[2]/div/div[1]/div[1]/div/div[2]/div[2]/div/div[1]/div/span'
+        self.__doc_type: str = '//span[text()="Паспорт ТС"]'
         self.__doc_series: str = '//*[@id="vehicle-form"]/div[4]/div[2]/div/div[2]/label[1]/span[2]/input'
         self.__doc_number: str = '//*[@id="vehicle-form"]/div[4]/div[2]/div/div[2]/label[2]/span[2]/input'
         self.__doc_date: str = '//*[@id="vehicle-form"]/div[4]/div[2]/div/div[2]/div/div/div[1]/label/span[1]/input'
@@ -35,13 +32,17 @@ class Vehicle(SeleniumBase):
     def get_button_add_vehicle(self) -> WebElement:
         return self.is_visible('xpath', self.__button_add_vehicle, 'button_add_vehicle')
 
-    # марка по ПТС
-    def get_mark(self) -> WebElement:
-        return self.is_visible('xpath', self.__mark, 'mark')
+    # поиск внутри выпадающего списка
+    def get_find(self):
+        return self.is_visible('xpath', self.__find, 'find')
 
-    # модель по ПТС
-    def get_model(self) -> WebElement:
-        return self.is_visible('xpath', self.__model, 'model')
+    # выбор раздела аккардеона
+    def get__accordion_chapter(self, name: str) -> WebElement:
+        return self.is_visible('xpath', self.__accordion_chapter.format(name), 'accordion_chapter')
+
+    # Выбор поля
+    def get__input(self, name: str):
+        return self.is_visible('xpath', self.__input.format(name), 'input')
 
     # открыть спиок категорий
     def get_cat_section(self) -> WebElement:
@@ -59,25 +60,9 @@ class Vehicle(SeleniumBase):
     def get_vehicle_type(self) -> WebElement:
         return self.is_visible('xpath', self.__type_vehicle, 'type_vehicle')
 
-    # мощность
-    def get_power(self) -> WebElement:
-        return self.is_visible('xpath', self.__power, 'power')
-
-    # год
-    def get_year(self) -> WebElement:
-        return self.is_visible('xpath', self.__year, 'year')
-
-    # VIN
-    def get_vin(self) -> WebElement:
-        return self.is_visible('xpath', self.__vin, 'vin')
-
-    # клик по разделу ТС
-    def get_vehicle_section(self) -> WebElement:
-        return self.is_visible('xpath', self.__vehicle_section, 'vehicle_section')
-
-    # клик по разделу документы на ТС
-    def get_doc_section(self) -> WebElement:
-        return self.is_visible('xpath', self.__doc_section, 'doc_section')
+    # выбор раздела аккардеона
+    def get_accardion_chapter(self, name: str) -> WebElement:
+        return self.is_visible('xpath', self.__accordion_chapter.format(name), 'vehicle_section')
 
     # открыть спиок документов на ТС
     def get_doc_type_section(self) -> WebElement:
