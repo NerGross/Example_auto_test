@@ -13,6 +13,7 @@ class Vehicle(SeleniumBase):
         self.__drop_down: str = '//span[text()="{}"]/..//div[@role]'
         self.__drop_down_find: str = '//input[@placeholder="Поиск"]'
         self.__drop_down_meaning: str = '//span[text()="{}"]'
+
         # старые
         self.__doc_type_section: str = '/html/body/div[1]/div/div/main/div/form/div[4]/div[2]/div/div[1]/div[1]/div'
         self.__doc_type: str = '//span[text()="Паспорт ТС"]'
@@ -21,9 +22,7 @@ class Vehicle(SeleniumBase):
         self.__doc_date: str = '//*[@id="vehicle-form"]/div[4]/div[2]/div/div[2]/div/div/div[1]/label/span[1]/input'
         self.__vehicle_Journal: str = '//*[@id="sgb2b"]/div/div/main/div/table'
         # импорт
-        self.__button_vehicle_import: str = '//*[@id="sgb2b"]/div/div/div[1]/div[3]/div[1]/button[1]'
-        self.__uploader: str = '/html/body/div[2]/div/div/form/div[2]/label/div[1]/span[1]'
-        self.__close: str = '/html/body/div[2]/div/div/form/div[4]/button[2]'
+        self.__uploader: str = 'input[name ="file"]'
 
     # кнопка
     def get_button(self, name: str) -> WebElement:
@@ -56,6 +55,13 @@ class Vehicle(SeleniumBase):
     def get_drop_down_meaning(self, name: str) -> WebElement:
         return self.is_visible('xpath', self.__drop_down_meaning.format(name), 'drop_down_meaning')
 
+    # область для загрузки файлов
+    def get_uploader(self) -> WebElement:
+        self.driver.execute_script('document.querySelector("input[name = file]").style.visibility = "visible"')
+        self.driver.execute_script('document.querySelector("input[name = file]").style.width = "10px"')
+        self.driver.execute_script('document.querySelector("input[name = file]").style.height = "10px"')
+        return self.is_visible('css', self.__uploader, 'upload')
+
     # старье
 
     # открыть спиок документов на ТС
@@ -85,7 +91,3 @@ class Vehicle(SeleniumBase):
     # Получаем список WebElement ->  возвращаем строку елементов
     def get_vehicle_Journal_text(self) -> str:
         return Utils.join_strings(Utils.get_text_from_webelements(self.get_vehicle_Journal()))
-
-    # область для загрузки файлов
-    def get_uploader(self) -> WebElement:
-        return self.is_visible('xpath', self.__uploader, 'upload')

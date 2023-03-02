@@ -141,13 +141,17 @@ class TestVehicle:
         vehicle = Vehicle(self.driver)
         with allure.step('Вход в ЛК'):
             TestVehicle().enter()
-        with allure.step('Загрузки страницы журнал ТС'):
-            while not vehicle.get_wait_load_dom():
+        with allure.step('Ожиданеи загрузки страницы журнал ТС'):
+            while not vehicle.get_wait_load_dom("Добавить ТС"):
                 sleep(1)
         with allure.step('Переход в импорт'):
-            vehicle.get_button_vehicle_import().click()
+            vehicle.get_button("Загрузить ТС из файла").click()
         sleep(1)
         with allure.step('загрузка файла'):
-            vehicle.get_close().click()
-        # vehicle.get_uploader().send_keys('C:\suburb.xlsx')
+            vehicle.get_uploader().send_keys('C:/Users/alekseyo/PycharmProjects/autotest-sogaz/img/valid.xlsx')
+        with allure.step('Ожидание загрузки файла'):
+            while not vehicle.get_wait_load_dom("Загрузить"):
+                sleep(1)
+        with allure.step('Загрузить'):
+            vehicle.get_button("Загрузить").click()
         sleep(10)
