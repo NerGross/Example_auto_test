@@ -28,8 +28,8 @@ def get_webdriver(get_chrome_options):
 @pytest.fixture(scope='function')
 def setup(request, get_webdriver):
     driver = get_webdriver
-    url = config.url_dev_transfer
-    #url = config.url_dev
+    #url = config.url_dev_transfer
+    url = config.url_dev
     if request.cls is not None:
         request.cls.driver = driver
     driver.get(url)

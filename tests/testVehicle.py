@@ -6,6 +6,7 @@ from datetime import datetime
 from pom.enter import Enter
 from pom.vehicle import Vehicle
 from random import choices, choice
+from openpyxl import load_workbook
 
 
 @pytest.mark.usefixtures('setup')
@@ -145,9 +146,19 @@ class TestVehicle:
                 sleep(1)
         with allure.step("Переход в импорт"):
             vehicle.get_button("Загрузить ТС из файла").click()
-        sleep(5)
+        with allure.step("Формируем файл"):
+            wb = load_workbook("valid.xlsx")
+            sheet = wb.active
+            current_day = datetime.now()
+            sheet['B4'] = config.vehicle_dict["ИНН_Моэск"]
+            sheet['C4'] = config.vehicle_dict["КПП_Моэск"]
+            sheet['I4'] = "".join(choices(config.str_vin, k=17))
+            sheet['L4'] = "".join((choices(config.str_rus, k=1)) + (choices(config.str_number, k=3)) +
+                                  (choices(config.str_rus, k=2)) + (choices(config.str_number, k=3)))
+            sheet['S4'] = ("00{:02}{:02}".format(current_day.day, current_day.month))
+            wb.save("valid.xlsx")
         with allure.step("загрузка файла"):
-            vehicle.get_upload().send_keys('C:/Users/alekseyo/PycharmProjects/autotest-sogaz/img/valid.xlsx')
+            vehicle.get_upload().send_keys('C:/Users/Honor/PycharmProjects/autotest-sogaz/tests/valid.xlsx')
         with allure.step('Ожидание загрузки файла'):
             while not vehicle.get_wait_load_dom("Загрузить"):
                 sleep(1)
