@@ -18,8 +18,10 @@ class TestVehicle:
             enter.get_login().send_keys(config.login_admin)
             enter.get_password().send_keys(config.password_admin)
             enter.get_button_enter().click()
+        sleep(1)
         with allure.step('Выбор организации'):
             enter.get_employee_list().click()
+        sleep(1)
         with allure.step('Переход Объекты страхование - Транспортные средства'):
             enter.get_menu_item().click()
             enter.get_menu_item_child().click()
@@ -147,7 +149,7 @@ class TestVehicle:
         with allure.step("Переход в импорт"):
             vehicle.get_button("Загрузить ТС из файла").click()
         with allure.step("Формируем файл"):
-            wb = load_workbook("valid.xlsx")
+            wb = load_workbook("C:/Users/Honor/PycharmProjects/autotest-sogaz/img/valid.xlsx")
             sheet = wb.active
             current_day = datetime.now()
             sheet['B4'] = config.vehicle_dict["ИНН_Моэск"]
@@ -156,9 +158,21 @@ class TestVehicle:
             sheet['L4'] = "".join((choices(config.str_rus, k=1)) + (choices(config.str_number, k=3)) +
                                   (choices(config.str_rus, k=2)) + (choices(config.str_number, k=3)))
             sheet['S4'] = ("00{:02}{:02}".format(current_day.day, current_day.month))
-            wb.save("valid.xlsx")
+            wb.save("../img/valid.xlsx")
+        sleep(1)
+        with allure.step("C:/Users/Honor/PycharmProjects/autotest-sogaz/img/valid.xlsx"):
+            print("---" + vehicle.get_template().text + "---")
+            sleep(5)
+            if vehicle.get_template().text != "Шаблон ТС (стандартный)":
+                vehicle.get_template().click()
+                vehicle.get_drop_down_find1().send_keys("Шаблон ТС(стандартный)")
+                vehicle.get_drop_down_find1().send_keys('\n')
+                vehicle.get_drop_down_meaning("Шаблон ТС(стандартный)").click()
+            else:
+                pass
+        sleep(1)
         with allure.step("загрузка файла"):
-            vehicle.get_upload().send_keys('C:/Users/Honor/PycharmProjects/autotest-sogaz/tests/valid.xlsx')
+            vehicle.get_upload().send_keys("C:/Users/Honor/PycharmProjects/autotest-sogaz/img/valid.xlsx")
         with allure.step('Ожидание загрузки файла'):
             while not vehicle.get_wait_load_dom("Загрузить"):
                 sleep(1)
