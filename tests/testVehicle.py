@@ -86,48 +86,47 @@ class TestVehicle:
         # Раздел "документы на ТС"
         with allure.step("Открытие раздела докумаент на  ТС"):
             vehicle.get_accordion_chapter("Документ на ТС").click()
-        with allure.step("тип документа"):
-            vehicle.get_doc_type_section().click()
-            sleep(1)
-            vehicle.get_drop_down_find().send_keys("Паспорт ТС \n")
-            sleep(1)
-            vehicle.get_doc_type().click()
+        with allure.step("Тип документа TC"):
+            vehicle.get_drop_down("Тип документа TC").click()
+            vehicle.get_drop_down_find().send_keys(config.vehicle_dict["Тип документа TC"])
+            vehicle.get_drop_down_find().send_keys('\n')
+            vehicle.get_drop_down_meaning(config.vehicle_dict["Тип документа TC"]).click()
         with allure.step('Серия документа о регистрации'):
-            vehicle.get_doc_series().send_keys(choices(config.str_number, k=2) + choices(config.str_rus, k=2))
+            vehicle.get_doc_vehicle_series().send_keys(choices(config.str_number, k=2) + choices(config.str_rus, k=2))
         with allure.step('Номер документа о регистрации'):
-            vehicle.get_doc_number().send_keys(
+            vehicle.get_doc_vehicle_number().send_keys(
                 "00{:02}{:02}".format(current_day.day, current_day.month))
         with allure.step('Номер документа о регистрации'):
-            vehicle.get_doc_date().send_keys(
+            vehicle.get_doc_vehicle_date().send_keys(
                 "{:02}.{:02}.{:04}".format(current_day.day, current_day.month, current_day.year))
         with allure.step("Закрытие раздела докумаент на  ТС"):
             vehicle.get_accordion_chapter("Документ на ТС").click()
         # Раздел документы на ТО
-        # with allure.step("Открытие раздела документ на  ТО"):
-        #     vehicle.get_accardion_chapter("Документ на ТО").click()
-        # with allure.step("Тип документа TO"):
-        #     vehicle.get_drop_down("Тип документа TO").click()
-        #     vehicle.get_drop_down_find().send_keys(config.vehicle_dict["Тип документа TO"])
-        #     vehicle.get_drop_down_find().send_keys('\n')
-        #     vehicle.get_drop_down_meaning(config.vehicle_dict["Тип документа TO"]).click()
-        # with allure.step("Номер документа TO"):
-        #     vehicle.get__input("Номер документа TO").send_keys(choices(config.str_number, k=21))
-        # with allure.step('Дата выдачи документа TO'):
-        #     vehicle.get__input("Дата выдачи документа TO").send_keys(
-        #         "{:02}.{:02}.{:04}".format(current_day.day, current_day.month, current_day.year))
+        with allure.step("Открытие раздела документ на  ТО"):
+            vehicle.get_accordion_chapter("Документ на ТО").click()
+        with allure.step("Тип документа TO"):
+            vehicle.get_drop_down("Тип документа TO").click()
+            vehicle.get_drop_down_find().send_keys(config.vehicle_dict["Тип документа TO"])
+            vehicle.get_drop_down_find().send_keys('\n')
+            vehicle.get_drop_down_meaning(config.vehicle_dict["Тип документа TO"]).click()
+        with allure.step("Номер документа TO"):
+            vehicle.get__input("Номер документа TO").send_keys(choices(config.str_number, k=21))
+        with allure.step("Дата выдачи документа TO"):
+            vehicle.get_doc_TO_date().send_keys(
+                "{:02}.{:02}.{:04}".format(current_day.day, current_day.month, current_day.year))
         # конец заполнения
         with allure.step('Cохраняем'):
             vehicle.get_button("Сохранить").click()
-        with allure.step('Загрузки страницы журнал ТС'):
+        with allure.step("Загрузки страницы журнал ТС"):
             while not vehicle.get_wait_load_dom("Добавить ТС"):
                 sleep(1)
-        with allure.step('Обновление страницы'):
+        with allure.step("Обновление страницы"):
             vehicle.driver.refresh()
-        with allure.step('Загрузки страницы журнал ТС'):
+        with allure.step("Загрузки страницы журнал ТС"):
             while not vehicle.get_wait_load_dom("Добавить ТС"):
                 sleep(1)
-        with allure.step('Проверка добавления ТС'):
-            if "".join(VIN) in vehicle.get_vehicle_Journal_text():
+        with allure.step("Проверка добавления ТС"):
+            if "".join(VIN) in vehicle.get_vehicle_Journal():
                 result = True
             else:
                 result = False
@@ -139,19 +138,23 @@ class TestVehicle:
         Импорт ТС
         """
         vehicle = Vehicle(self.driver)
-        with allure.step('Вход в ЛК'):
+        with allure.step("Вход в ЛК"):
             TestVehicle().enter()
-        with allure.step('Ожиданеи загрузки страницы журнал ТС'):
+        with allure.step("Ожиданеи загрузки страницы журнал ТС"):
             while not vehicle.get_wait_load_dom("Добавить ТС"):
                 sleep(1)
-        with allure.step('Переход в импорт'):
+        with allure.step("Переход в импорт"):
             vehicle.get_button("Загрузить ТС из файла").click()
-        sleep(1)
-        with allure.step('загрузка файла'):
-            vehicle.get_uploader().send_keys('C:/Users/alekseyo/PycharmProjects/autotest-sogaz/img/valid.xlsx')
+        sleep(5)
+        with allure.step("загрузка файла"):
+            vehicle.get_upload().send_keys('C:/Users/alekseyo/PycharmProjects/autotest-sogaz/img/valid.xlsx')
         with allure.step('Ожидание загрузки файла'):
             while not vehicle.get_wait_load_dom("Загрузить"):
                 sleep(1)
         with allure.step('Загрузить'):
             vehicle.get_button("Загрузить").click()
-        sleep(10)
+        with allure.step('Ожидание загрузки страницы'):
+            while not vehicle.get_wait_load_dom("К списку ТС"):
+                sleep(1)
+        with allure.step("Проверка добавления ТС"):
+            assert vehicle.get_upload_stat() == vehicle.UPLOAD_STAT

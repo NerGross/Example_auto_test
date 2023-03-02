@@ -13,16 +13,17 @@ class Vehicle(SeleniumBase):
         self.__drop_down: str = '//span[text()="{}"]/..//div[@role]'
         self.__drop_down_find: str = '//input[@placeholder="Поиск"]'
         self.__drop_down_meaning: str = '//span[text()="{}"]'
+        # не перевести в универсальные
+        self.__doc_vehicle_series: str = '//*[@id="vehicle-form"]/div[4]/div[2]/div/div[2]/label[1]/span[2]/input'
+        self.__doc_vehicle_number: str = '//*[@id="vehicle-form"]/div[4]/div[2]/div/div[2]/label[2]/span[2]/input'
+        self.__doc_vehicle_date: str = '//*[@id="vehicle-form"]/div[4]/div[2]/div/div[2]/div/div/div[1]/label/span[1]/input'
+        self.__doc_TO_date: str = '//*[@id="vehicle-form"]/div[5]/div[2]/div/div[2]/div/div/div[1]/label/span[1]/input'
+        self.__vehicle_journal: str = '//tbody'
 
-        # старые
-        self.__doc_type_section: str = '/html/body/div[1]/div/div/main/div/form/div[4]/div[2]/div/div[1]/div[1]/div'
-        self.__doc_type: str = '//span[text()="Паспорт ТС"]'
-        self.__doc_series: str = '//*[@id="vehicle-form"]/div[4]/div[2]/div/div[2]/label[1]/span[2]/input'
-        self.__doc_number: str = '//*[@id="vehicle-form"]/div[4]/div[2]/div/div[2]/label[2]/span[2]/input'
-        self.__doc_date: str = '//*[@id="vehicle-form"]/div[4]/div[2]/div/div[2]/div/div/div[1]/label/span[1]/input'
-        self.__vehicle_Journal: str = '//*[@id="sgb2b"]/div/div/main/div/table'
         # импорт
-        self.__uploader: str = 'input[name ="file"]'
+        self.__upload: str = 'input[name ="file"]'
+        self.__upload_stat: str = '//tr/td[1]'
+        self.UPLOAD_STAT = "Успешно"
 
     # кнопка
     def get_button(self, name: str) -> WebElement:
@@ -55,39 +56,34 @@ class Vehicle(SeleniumBase):
     def get_drop_down_meaning(self, name: str) -> WebElement:
         return self.is_visible('xpath', self.__drop_down_meaning.format(name), 'drop_down_meaning')
 
+    # Серия документа о регистрации
+    def get_doc_vehicle_series(self) -> WebElement:
+        return self.is_visible('xpath', self.__doc_vehicle_series, 'doc_vehicle_series')
+
+    # номер документа о регистрации
+    def get_doc_vehicle_number(self) -> WebElement:
+        return self.is_visible('xpath', self.__doc_vehicle_number, 'doc_vehicle_number')
+
+    # дата документа о регистрации
+    def get_doc_vehicle_date(self) -> WebElement:
+        return self.is_visible('xpath', self.__doc_vehicle_date, 'doc_vehicle_date')
+
+    # дата документа о регистрации
+    def get_doc_TO_date(self) -> WebElement:
+        return self.is_visible('xpath', self.__doc_TO_date, 'doc_TO_date')
+
+    # Получаем журнал ТС -> список webElement
+    def get_vehicle_Journal(self) -> str:
+        vehicle_journal = self.are_visible('xpath', self.__vehicle_journal, 'vehicle_journal')
+        return Utils.join_strings(Utils.get_text_from_webelements(vehicle_journal))
+
     # область для загрузки файлов
-    def get_uploader(self) -> WebElement:
+    def get_upload(self) -> WebElement:
         self.driver.execute_script('document.querySelector("input[name = file]").style.visibility = "visible"')
         self.driver.execute_script('document.querySelector("input[name = file]").style.width = "10px"')
         self.driver.execute_script('document.querySelector("input[name = file]").style.height = "10px"')
-        return self.is_visible('css', self.__uploader, 'upload')
+        return self.is_visible('css', self.__upload, 'upload')
 
-    # старье
-
-    # открыть спиок документов на ТС
-    def get_doc_type_section(self) -> WebElement:
-        return self.is_visible('xpath', self.__doc_type_section, 'doc_type_section')
-
-    # выбрать категорию документа на ТС
-    def get_doc_type(self) -> WebElement:
-        return self.is_visible('xpath', self.__doc_type, 'doc_type')
-
-    # Серия документа о регистрации
-    def get_doc_series(self) -> WebElement:
-        return self.is_visible('xpath', self.__doc_series, 'doc_series')
-
-    # номер документа о регистрации
-    def get_doc_number(self) -> WebElement:
-        return self.is_visible('xpath', self.__doc_number, 'doc_number')
-
-    # дата документа о регистрации
-    def get_doc_date(self) -> WebElement:
-        return self.is_visible('xpath', self.__doc_date, 'doc_date')
-
-    # Получаем журнал ТС -> список webElement
-    def get_vehicle_Journal(self) -> list[WebElement]:
-        return self.are_visible('xpath', self.__vehicle_Journal, 'vehicle_Journal')
-
-    # Получаем список WebElement ->  возвращаем строку елементов
-    def get_vehicle_Journal_text(self) -> str:
-        return Utils.join_strings(Utils.get_text_from_webelements(self.get_vehicle_Journal()))
+    # проверка статуса загрузки
+    def get_upload_stat(self) -> str:
+        return self.is_visible('xpath', self.__upload_stat, 'upload_stat').text
