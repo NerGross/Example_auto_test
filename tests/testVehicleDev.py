@@ -8,7 +8,6 @@ from pom.vehicle import Vehicle
 from random import choices, choice
 from openpyxl import load_workbook
 
-
 @pytest.mark.usefixtures('setup')
 class TestVehicle:
 
@@ -72,8 +71,8 @@ class TestVehicle:
             vehicle.get_drop_down("Тип ТС").click()
             vehicle.get_drop_down_find().send_keys(config.vehicle_dict["Тип ТС"])
             vehicle.get_drop_down_meaning(config.vehicle_dict["Тип ТС"]).click()
-        with allure.step("Мощность, л.с. (для категории В)"):
-            vehicle.get__input("Мощность, л.с. (для категории В)").send_keys(config.vehicle_dict["Мощность"])
+        # with allure.step("Мощность, л.с. (для категории В)"):
+        #    vehicle.get__input("Мощность, л.с. (для категории В)").send_keys(config.vehicle_dict["Мощность"])
         with allure.step("Год выпуска"):
             current_day = datetime.now()
             vehicle.get__input("Год выпуска").send_keys(current_day.year)
@@ -149,7 +148,7 @@ class TestVehicle:
         with allure.step("Переход в импорт"):
             vehicle.get_button("Загрузить ТС из файла").click()
         with allure.step("Формируем файл"):
-            wb = load_workbook("C:/Users/Honor/PycharmProjects/autotest-sogaz/img/valid.xlsx")
+            wb = load_workbook(config.url_file)
             sheet = wb.active
             current_day = datetime.now()
             sheet['B4'] = config.vehicle_dict["ИНН_Моэск"]
@@ -158,21 +157,19 @@ class TestVehicle:
             sheet['L4'] = "".join((choices(config.str_rus, k=1)) + (choices(config.str_number, k=3)) +
                                   (choices(config.str_rus, k=2)) + (choices(config.str_number, k=3)))
             sheet['S4'] = ("00{:02}{:02}".format(current_day.day, current_day.month))
-            wb.save("../img/valid.xlsx")
+            wb.save(config.url_file)
+            wb.close()
         sleep(1)
-        with allure.step("C:/Users/Honor/PycharmProjects/autotest-sogaz/img/valid.xlsx"):
-            print("---" + vehicle.get_template().text + "---")
-            sleep(5)
+        with allure.step("Выбор шаблона"):
+            sleep(1)
             if vehicle.get_template().text != "Шаблон ТС (стандартный)":
                 vehicle.get_template().click()
-                vehicle.get_drop_down_find1().send_keys("Шаблон ТС(стандартный)")
-                vehicle.get_drop_down_find1().send_keys('\n')
-                vehicle.get_drop_down_meaning("Шаблон ТС(стандартный)").click()
-            else:
-                pass
+                vehicle.get_drop_down_find().send_keys("Шаблон ТС (стандартный)")
+                vehicle.get_drop_down_find().send_keys('\n')
+                vehicle.get_drop_down_meaning("Шаблон ТС (стандартный)").click()
         sleep(1)
         with allure.step("загрузка файла"):
-            vehicle.get_upload().send_keys("C:/Users/Honor/PycharmProjects/autotest-sogaz/img/valid.xlsx")
+            vehicle.get_upload().send_keys(config.url_file)
         with allure.step('Ожидание загрузки файла'):
             while not vehicle.get_wait_load_dom("Загрузить"):
                 sleep(1)

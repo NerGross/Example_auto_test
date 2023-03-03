@@ -36,3 +36,5 @@ def setup(request, get_webdriver):
     yield driver
     driver.delete_all_cookies()
     driver.quit()
+
+
