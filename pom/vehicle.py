@@ -32,16 +32,9 @@ class Vehicle(SeleniumBase):
         """ кнопка видна и имеет вес """
         return self.is_visible('xpath', self.__button.format(name), 'button')
 
-    def get_button_of(self, name: str) -> bool:
-        """ кнопка пропадает из DOM """
-        return self.is_staleness_of('xpath', self.__button.format(name), 'button')
-
-    def get_wait_load_dom(self, name):
-        """ проверка загрузке страницы проверкой доступности кнопки """
-        if self.to_be_clickable('xpath', self.__button.format(name), 'wait_load_dom'):
-            return True
-        else:
-            return False
+    def get_not_button(self, name: str) -> bool:
+        """ кнопка не видна"""
+        return self.is_not_visible('xpath', self.__button.format(name), 'not_button')
 
     def get_accordion_chapter(self, name: str) -> WebElement:
         """ выбор раздела аккардеона """

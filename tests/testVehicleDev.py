@@ -35,13 +35,13 @@ class TestVehicle:
         vehicle = Vehicle(self.driver)
         with allure.step("Вход в ЛК"):
             TestVehicle().enter()
-        #with allure.step("Загрузки страницы журнал ТС"):
-         #   assert vehicle.get_wait_load_dom("Добавить ТС")
+        # with allure.step("Загрузки страницы журнал ТС"):
+        #   assert vehicle.get_wait_load_dom("Добавить ТС")
         # Раздел "ТС"
         with allure.step("Переход в добавление ТС"):
             vehicle.get_button("Добавить ТС").click()
         with allure.step("Загрузки страницы добавления ТС"):
-            vehicle.get_button_of("Добавить ТС")
+            vehicle.get_not_button("Добавить ТС")
             assert vehicle.get_button("Сохранить")
         with allure.step("Марка"):
             vehicle.get_drop_down("Марка").click()
@@ -120,12 +120,7 @@ class TestVehicle:
         with allure.step('Cохраняем'):
             vehicle.get_button("Сохранить").click()
         with allure.step("Загрузки страницы журнал ТС"):
-            vehicle.get_button_of("Сохранить")
-            assert vehicle.get_button("Добавить ТС")
-        with allure.step("Обновление страницы"):
-            vehicle.driver.refresh()
-        with allure.step("Загрузки страницы журнал ТС"):
-            vehicle.get_button_of("Добавить ТС")
+            vehicle.get_not_button("Сохранить")
             assert vehicle.get_button("Добавить ТС")
         with allure.step("Проверка добавления ТС"):
             if "".join(VIN) in vehicle.get_vehicle_Journal():
@@ -142,11 +137,13 @@ class TestVehicle:
         vehicle = Vehicle(self.driver)
         with allure.step("Вход в ЛК"):
             TestVehicle().enter()
-        with allure.step("Ожиданеи загрузки страницы журнал ТС"):
-            while not vehicle.get_wait_load_dom("Добавить ТС"):
-                sleep(1)
+        # with allure.step("Ожиданеи загрузки страницы журнал ТС"):
+        #    while not vehicle.get_wait_load_dom("Добавить ТС"):
         with allure.step("Переход в импорт"):
             vehicle.get_button("Загрузить ТС из файла").click()
+        with allure.step("Загрузки страницы импорта ТС"):
+            vehicle.get_not_button("Добавить ТС")
+            assert vehicle.get_button("Закрыть")
         with allure.step("Формируем файл"):
             wb = load_workbook(config.url_file)
             sheet = wb.active
@@ -159,9 +156,7 @@ class TestVehicle:
             sheet['S4'] = ("00{:02}{:02}".format(current_day.day, current_day.month))
             wb.save(config.url_file)
             wb.close()
-        sleep(1)
         with allure.step("Выбор шаблона"):
-            sleep(1)
             if vehicle.get_template().text != "Шаблон ТС (стандартный)":
                 vehicle.get_template().click()
                 vehicle.get_drop_down_find().send_keys("Шаблон ТС (стандартный)")
