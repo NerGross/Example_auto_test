@@ -3,6 +3,7 @@ from selenium.webdriver.support import expected_conditions as ec
 from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.remote.webelement import WebElement
 
+
 class SeleniumBase:
     """
     Описывает общие методы работы selenium.webdrivewer с web элементами.
@@ -30,32 +31,26 @@ class SeleniumBase:
             'tag_name': By.TAG_NAME}
         return locating[find_by]
 
-    # Ожидание проверки того, что элемент присутствует на DOM страницы и виден. Возвращает WebElement.
     def is_visible(self, find_by: str, locator: str, locator_name=None) -> WebElement:
+        """visibility_of_element_located - Ожидание проверки того, что элемент присутствует в DOM объекта страница и видна.
+        Видимость означает,  что элемент не только отображается но также имеет высоту и ширину, которые больше 0.
+        Локатор - используется  для поиска элемента  возвращает WebElement, как только он будет найден и виден"""
         return self.__wait.until(ec.visibility_of_element_located((self.__get_selenium_by(find_by), locator)),
                                  locator_name)
 
-    # Ожидание проверки того, что все элементы присутствуют в DOM страницы и видны.
-    def are_visible(self, find_by: str, locator: str, locator_name=None) -> list[WebElement]:
-        return self.__wait.until(ec.visibility_of_all_elements_located((self.__get_selenium_by(find_by), locator)),
+    def is_staleness_of(self, find_by: str, locator: str, locator_name=None) -> bool:
+        """is_staleness_of - Подождите, пока элемент больше не будет присоединен к DOM. element — это элемент ожидания.
+        Возвращает False, если элемент все еще прикреплен к DOM, в противном случае — true"""
+        return self.__wait.until(ec.staleness_of((self.__get_selenium_by(find_by), locator)),
                                  locator_name)
 
-    # Следующие два условия подтверждают,что элемент появляется,и переданные параметры являются локаторами типа кортежа
-    # Один будет проходить до тех пор, пока загружен один элемент, соответствующий условиям,
-    # а другой должен загрузить все элементы, соответствующие условиям.
-    def is_present(self, find_by: str, locator: str, locator_name=None) -> bool:
-        return self.__wait.until(ec.presence_of_element_located((self.__get_selenium_by(find_by), locator)),
-                                 locator_name)
-
-    def are_present(self, find_by: str, locator: str, locator_name=None) -> list[WebElement]:
-        return self.__wait.until(ec.presence_of_all_elements_located((self.__get_selenium_by(find_by), locator)),
-                                 locator_name)
-
-    # Следующие два условия подтверждают, что элемент пропадет со страницы
-    def is_not_present(self, find_by: str, locator: str, locator_name=None) -> bool:
-        return self.__wait.until(ec.invisibility_of_element_located((self.__get_selenium_by(find_by), locator)),
-                                 locator_name)
-
+    #
     def to_be_clickable(self, find_by: str, locator: str, locator_name=None) -> WebElement:
+        """ Ожидание проверки элемента видно и включено, поэтому вы можете щелкнуть его.
+        элемент является либо локатором (текстом), либо WebElement"""
         return self.__wait.until(ec.element_to_be_clickable((self.__get_selenium_by(find_by), locator)),
+                                 locator_name)
+
+    def are_visible(self, find_by: str, locator: str, locator_name=None) -> WebElement:
+        return self.__wait.until(ec.visibility_of_all_elements_located((self.__get_selenium_by(find_by), locator)),
                                  locator_name)

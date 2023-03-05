@@ -8,6 +8,7 @@ from pom.vehicle import Vehicle
 from random import choices, choice
 from openpyxl import load_workbook
 
+
 @pytest.mark.usefixtures('setup')
 class TestVehicle:
 
@@ -32,17 +33,16 @@ class TestVehicle:
         """
 
         vehicle = Vehicle(self.driver)
-        with allure.step('Вход в ЛК'):
+        with allure.step("Вход в ЛК"):
             TestVehicle().enter()
-        with allure.step('Загрузки страницы журнал ТС'):
-            while not vehicle.get_wait_load_dom("Добавить ТС"):
-                sleep(1)
+        #with allure.step("Загрузки страницы журнал ТС"):
+         #   assert vehicle.get_wait_load_dom("Добавить ТС")
         # Раздел "ТС"
         with allure.step("Переход в добавление ТС"):
             vehicle.get_button("Добавить ТС").click()
-        with allure.step('Загрузки страницы добавления ТС'):
-            while not vehicle.get_wait_load_dom("Сохранить"):
-                sleep(1)
+        with allure.step("Загрузки страницы добавления ТС"):
+            vehicle.get_button_of("Добавить ТС")
+            assert vehicle.get_button("Сохранить")
         with allure.step("Марка"):
             vehicle.get_drop_down("Марка").click()
             vehicle.get_drop_down_find().send_keys(config.vehicle_dict["Марка"])
@@ -120,13 +120,13 @@ class TestVehicle:
         with allure.step('Cохраняем'):
             vehicle.get_button("Сохранить").click()
         with allure.step("Загрузки страницы журнал ТС"):
-            while not vehicle.get_wait_load_dom("Добавить ТС"):
-                sleep(1)
+            vehicle.get_button_of("Сохранить")
+            assert vehicle.get_button("Добавить ТС")
         with allure.step("Обновление страницы"):
             vehicle.driver.refresh()
         with allure.step("Загрузки страницы журнал ТС"):
-            while not vehicle.get_wait_load_dom("Добавить ТС"):
-                sleep(1)
+            vehicle.get_button_of("Добавить ТС")
+            assert vehicle.get_button("Добавить ТС")
         with allure.step("Проверка добавления ТС"):
             if "".join(VIN) in vehicle.get_vehicle_Journal():
                 result = True
