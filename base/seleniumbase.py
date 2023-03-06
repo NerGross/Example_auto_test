@@ -14,18 +14,19 @@ class SeleniumBase:
     def __init__(self, driver):
         self.driver = driver
         self.__wait = WebDriverWait(driver, 30)
+        driver.implicitly_wait(1)
 
     def __get_selenium_by(self, find_by: str) -> dict:
         find_by = find_by.lower()
         locating = {
             'css': By.CSS_SELECTOR,
             'xpath': By.XPATH,
-            'class_name': By.CLASS_NAME,
+            'class': By.CLASS_NAME,
             'id': By.ID,
             'link_text': By.LINK_TEXT,
             'name': By.NAME,
             'partial_link_text': By.PARTIAL_LINK_TEXT,
-            'tag_name': By.TAG_NAME}
+            'tag': By.TAG_NAME}
         return locating[find_by]
 
     def is_visible(self, find_by: str, locator: str, locator_name=None) -> WebElement:
@@ -50,5 +51,11 @@ class SeleniumBase:
                                  locator_name)
 
     def are_visible(self, find_by: str, locator: str, locator_name=None) -> WebElement:
+        """ Ожидание проверки того, что все элементы присутствуют в DOM страницы и видимы.
+        Видимость означает, что элементы не только отображаются, но также имеют высоту и ширину больше 0.
+        локатор - используется для поиска элементов возвращает список WebElements, как только они будут обнаружены и видны """
         return self.__wait.until(ec.visibility_of_all_elements_located((self.__get_selenium_by(find_by), locator)),
                                  locator_name)
+
+    def find_element(self, find_by: str, locator: str) -> WebElement:
+        return self.driver.find_element((self.__get_selenium_by(find_by), locator))

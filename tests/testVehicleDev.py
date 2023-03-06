@@ -1,5 +1,7 @@
 import allure
 import pytest
+from selenium.webdriver.common.by import By
+
 import config
 from time import sleep
 from datetime import datetime
@@ -14,17 +16,25 @@ class TestVehicle:
 
     def enter(self):
         enter = Enter(self.driver)
+        with allure.step("Загрузки страницы ввода логина и пароля"):
+            print("Загрузка страницы ввода логина и")
+            enter.get_button("Войти")
         with allure.step('Вход в ЛК'):
-            enter.get_login().send_keys(config.login_admin)
-            enter.get_password().send_keys(config.password_admin)
-            enter.get_button_enter().click()
-        sleep(1)
+            enter.get_auth("Логин").send_keys(config.login_admin)
+            enter.get_auth("Пароль").send_keys(config.password_admin)
+            enter.get_button("Войти").click()
+        with allure.step("Загрузки страницы выбор компании"):
+            enter.get_not_button("Войти")
+            assert enter.get_company("Моэкс")
         with allure.step('Выбор организации'):
-            enter.get_employee_list().click()
-        sleep(1)
-        with allure.step('Переход Объекты страхование - Транспортные средства'):
-            enter.get_menu_item().click()
-            enter.get_menu_item_child().click()
+            enter.get_company("Моэкс").click()
+        with allure.step("Загрузки страницы Договоры"):
+            enter.get_not_company("Моэкс")
+            assert enter.get_not_drop_down_meaning("Страхование ТС")
+        with allure.step('Переход по меню'):
+            enter.get_menu("Транспортные средства").click()
+        with allure.step("Транспортные средства"):
+            enter.get_not_drop_down_meaning("Страхование ТС")
 
     @allure.story('Ручное добавление ТС')
     def test_manual(self):
@@ -35,14 +45,14 @@ class TestVehicle:
         vehicle = Vehicle(self.driver)
         with allure.step("Вход в ЛК"):
             TestVehicle().enter()
-        # with allure.step("Загрузки страницы журнал ТС"):
-        #   assert vehicle.get_wait_load_dom("Добавить ТС")
-        # Раздел "ТС"
+        with allure.step("Загрузки страницы ТС"):
+            assert vehicle.get_button("Добавить ТС")
         with allure.step("Переход в добавление ТС"):
             vehicle.get_button("Добавить ТС").click()
         with allure.step("Загрузки страницы добавления ТС"):
             vehicle.get_not_button("Добавить ТС")
             assert vehicle.get_button("Сохранить")
+        # Раздел "ТС"
         with allure.step("Марка"):
             vehicle.get_drop_down("Марка").click()
             vehicle.get_drop_down_find().send_keys(config.vehicle_dict["Марка"])

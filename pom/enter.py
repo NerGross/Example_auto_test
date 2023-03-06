@@ -6,40 +6,41 @@ class Enter(SeleniumBase):
     def __init__(self, driver):
         super().__init__(driver)
         # Вход
-        self.__login: str = 'input[name="login"]'
-        self.__password: str = 'input[name="password"]'
-        self.__button_enter: str = 'button[type="submit"]'
-        self.__employee_list: str = '/html/body/div[4]/div/div/div/div[1]/div/ul/li[1]'
-        self.__menu_item: str = '//p[text()="Объекты страхования"]'
-        self.__menu_item_child: str = '//p[text()="Транспортные средства"]'
+        self.__auth: str = '//span[text()="{}"]/..//input'
+        self.__button: str = '//button[text()="{}"]'
+        self.__company: str = '//div[contains(text(),"{}")]'
+        # меню
+        self.__menu: str = '//p[text()="{}"]'
+        self.__drop_down_meaning: str = '//span[text()="{}"]'
 
-    # поле логин
-    def get_login(self) -> WebElement:
-        return self.is_visible('css', self.__login, 'login')
+    def get_auth(self, name: str) -> WebElement:
+        """поле логин/пароль"""
+        return self.find_element('xpath', self.__auth.format(name))
 
-    # поле пароль
-    def get_password(self) -> WebElement:
-        return self.is_visible('css', self.__password, 'password')
+    def get_button(self, name: str) -> WebElement:
+        """ кнопка видна и имеет вес """
+        return self.is_visible('xpath', self.__button.format(name), 'button')
 
-    # кнопка Войти
-    def get_button_enter(self) -> WebElement:
-        return self.is_visible('css', self.__button_enter, 'button_enter')
+    def get_not_button(self, name: str) -> bool:
+        """ кнопка не видна"""
+        return self.is_not_visible('xpath', self.__button.format(name), 'not_button')
 
-    # Выбор компании страхователя
-    def get_employee_list(self) -> WebElement:
-        return self.is_visible('xpath', self.__employee_list, 'employee_list')
+    def get_company(self, name: str) -> WebElement:
+        """ кнопка видна и имеет вес, поиск с contains (*содежит часть фразы)"""
+        return self.is_visible('xpath', self.__company.format(name))
 
-    # меню "Объект страхователя"
-    def get_menu_item(self) -> WebElement:
-        return self.is_visible('xpath', self.__menu_item, 'menu_item')
+    def get_not_company(self, name: str) -> bool:
+        """ кнопка не видна"""
+        return self.is_not_visible('xpath', self.__company.format(name))
 
-    # подменю "Транспортное средство"
-    def get_menu_item_child(self) -> WebElement:
-        return self.is_visible('xpath', self.__menu_item_child, 'menu_item_child') \
- \
-    # проверка о загрузке страницы
-    def get_wait_load_dom(self):
-        if self.driver.execute_script("return document.readyState") == "complete":
-            return True
-        else:
-            return False
+    def get_drop_down_meaning(self, name: str) -> WebElement:
+        """ проааадает значение найденого элемента выпадающего списка """
+        return self.is_visible('xpath', self.__drop_down_meaning.format(name), 'drop_down_meaning')
+
+    def get_not_drop_down_meaning(self, name: str) -> bool:
+        """ проааадает значение найденого элемента выпадающего списка """
+        return self.is_not_visible('xpath', self.__drop_down_meaning.format(name), 'drop_down_meaning')
+
+    def get_menu(self, name: str) -> WebElement:
+        """ кнопка видна и имеет вес, поиск с contains (*содежит часть фразы)"""
+        return self.find_element('xpath', self.__menu.format(name))

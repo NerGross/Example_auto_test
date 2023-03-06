@@ -41,8 +41,8 @@ class Vehicle(SeleniumBase):
         return self.is_visible('xpath', self.__accordion_chapter.format(name), 'accordion_chapter')
 
     def get__input(self, name: str) -> WebElement:
-        """ Выбор поля """
-        return self.is_visible('xpath', self.__input.format(name), 'input')
+        """ Выбор поля (implicitly_wait)"""
+        return self.find_element('xpath', self.__input.format(name))
 
     def get_drop_down(self, name: str) -> WebElement:
         """ Выбор выпадающего списка """
