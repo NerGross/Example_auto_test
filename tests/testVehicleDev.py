@@ -1,7 +1,5 @@
 import allure
 import pytest
-from selenium.webdriver.common.by import By
-
 import config
 from time import sleep
 from datetime import datetime
@@ -17,7 +15,6 @@ class TestVehicle:
     def enter(self):
         enter = Enter(self.driver)
         with allure.step("Загрузки страницы ввода логина и пароля"):
-            print("Загрузка страницы ввода логина и")
             enter.get_button("Войти")
         with allure.step('Вход в ЛК'):
             enter.get_auth("Логин").send_keys(config.login_admin)
@@ -25,9 +22,9 @@ class TestVehicle:
             enter.get_button("Войти").click()
         with allure.step("Загрузки страницы выбор компании"):
             enter.get_not_button("Войти")
-            assert enter.get_company("Моэкс")
+            assert enter.get_company("МОЭСК")
         with allure.step('Выбор организации'):
-            enter.get_company("Моэкс").click()
+            enter.get_company("МОЭСК").click()
         with allure.step("Загрузки страницы Договоры"):
             enter.get_not_company("Моэкс")
             assert enter.get_not_drop_down_meaning("Страхование ТС")

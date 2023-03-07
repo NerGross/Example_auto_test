@@ -15,7 +15,7 @@ class Enter(SeleniumBase):
 
     def get_auth(self, name: str) -> WebElement:
         """поле логин/пароль"""
-        return self.find_element('xpath', self.__auth.format(name))
+        return self.is_visible('xpath', self.__auth.format(name))
 
     def get_button(self, name: str) -> WebElement:
         """ кнопка видна и имеет вес """
@@ -43,4 +43,4 @@ class Enter(SeleniumBase):
 
     def get_menu(self, name: str) -> WebElement:
         """ кнопка видна и имеет вес, поиск с contains (*содежит часть фразы)"""
-        return self.find_element('xpath', self.__menu.format(name))
+        return self.is_visible('xpath', self.__menu.format(name))
