@@ -13,7 +13,7 @@ class SeleniumBase:
 
     def __init__(self, driver):
         self.driver = driver
-        self.__wait = WebDriverWait(driver, 30)
+        self.__wait = WebDriverWait(driver, 10)
         driver.implicitly_wait(1)
 
     def __get_selenium_by(self, find_by: str) -> dict:
@@ -58,4 +58,4 @@ class SeleniumBase:
                                  locator_name)
 
     def find_element(self, find_by: str, locator: str) -> WebElement:
-        return self.driver.find_element((self.__get_selenium_by(find_by), locator))
+        return self.driver.find_element(self.__get_selenium_by(find_by), locator)

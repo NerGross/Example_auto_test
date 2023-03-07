@@ -1,11 +1,10 @@
 import allure
 import pytest
 import config
-from time import sleep
 from datetime import datetime
 from pom.enter import Enter
 from pom.vehicle import Vehicle
-from random import choices, choice
+from random import choices
 from openpyxl import load_workbook
 
 
@@ -27,13 +26,14 @@ class TestVehicle:
             enter.get_company("МОЭСК").click()
         with allure.step("Загрузки страницы Договоры"):
             enter.get_not_company("Моэкс")
-            assert enter.get_not_drop_down_meaning("Страхование ТС")
+            assert enter.get_drop_down_meaning("Страхование ТС")
         with allure.step('Переход по меню'):
+            enter.get_menu("Объекты страхования").click()
             enter.get_menu("Транспортные средства").click()
         with allure.step("Транспортные средства"):
             enter.get_not_drop_down_meaning("Страхование ТС")
 
-    @allure.story('Ручное добавление ТС')
+    @allure.story('Ручное добавление ТС CС')
     def test_manual(self):
         """
         Ручное добавление ТС
@@ -136,7 +136,7 @@ class TestVehicle:
                 result = False
             assert result == True
 
-    @allure.story('Импорт ТС')
+    @allure.story('Импорт ТС CС')
     def test_import(self):
         """
         Импорт ТС
@@ -144,12 +144,12 @@ class TestVehicle:
         vehicle = Vehicle(self.driver)
         with allure.step("Вход в ЛК"):
             TestVehicle().enter()
-        # with allure.step("Ожиданеи загрузки страницы журнал ТС"):
-        #    while not vehicle.get_wait_load_dom("Добавить ТС"):
+        with allure.step("Загрузки страницы ТС"):
+            assert vehicle.get_button("Добавить ТС")
         with allure.step("Переход в импорт"):
             vehicle.get_button("Загрузить ТС из файла").click()
         with allure.step("Загрузки страницы импорта ТС"):
-            vehicle.get_not_button("Добавить ТС")
+            # vehicle.get_not_button("Добавить ТС")
             assert vehicle.get_button("Закрыть")
         with allure.step("Формируем файл"):
             wb = load_workbook(config.url_file)
@@ -169,16 +169,15 @@ class TestVehicle:
                 vehicle.get_drop_down_find().send_keys("Шаблон ТС (стандартный)")
                 vehicle.get_drop_down_find().send_keys('\n')
                 vehicle.get_drop_down_meaning("Шаблон ТС (стандартный)").click()
-        sleep(1)
         with allure.step("загрузка файла"):
             vehicle.get_upload().send_keys(config.url_file)
         with allure.step('Ожидание загрузки файла'):
-            while not vehicle.get_wait_load_dom("Загрузить"):
-                sleep(1)
+            assert vehicle.get_button("Загрузить")
+        # конец заполнения
         with allure.step('Загрузить'):
             vehicle.get_button("Загрузить").click()
-        with allure.step('Ожидание загрузки страницы'):
-            while not vehicle.get_wait_load_dom("К списку ТС"):
-                sleep(1)
+        with allure.step("Загрузки промежуточной таблицы"):
+            vehicle.get_not_button("Загрузить")
+            assert vehicle.get_button("К списку ТС")
         with allure.step("Проверка добавления ТС"):
             assert vehicle.get_upload_stat() == vehicle.UPLOAD_STAT

@@ -15,11 +15,11 @@ class Enter(SeleniumBase):
 
     def get_auth(self, name: str) -> WebElement:
         """поле логин/пароль"""
-        return self.is_visible('xpath', self.__auth.format(name))
+        return self.is_visible('xpath', self.__auth.format(name), 'auth')
 
     def get_button(self, name: str) -> WebElement:
-        """ кнопка видна и имеет вес """
-        return self.is_visible('xpath', self.__button.format(name), 'button')
+        """  кнопка видна и кликабельна  """
+        return self.to_be_clickable('xpath', self.__button.format(name), 'button')
 
     def get_not_button(self, name: str) -> bool:
         """ кнопка не видна"""
@@ -27,11 +27,11 @@ class Enter(SeleniumBase):
 
     def get_company(self, name: str) -> WebElement:
         """ кнопка видна и имеет вес, поиск с contains (*содежит часть фразы)"""
-        return self.is_visible('xpath', self.__company.format(name))
+        return self.is_visible('xpath', self.__company.format(name), 'company')
 
     def get_not_company(self, name: str) -> bool:
         """ кнопка не видна"""
-        return self.is_not_visible('xpath', self.__company.format(name))
+        return self.is_not_visible('xpath', self.__company.format(name), 'not_company')
 
     def get_drop_down_meaning(self, name: str) -> WebElement:
         """ проааадает значение найденого элемента выпадающего списка """
@@ -43,4 +43,4 @@ class Enter(SeleniumBase):
 
     def get_menu(self, name: str) -> WebElement:
         """ кнопка видна и имеет вес, поиск с contains (*содежит часть фразы)"""
-        return self.is_visible('xpath', self.__menu.format(name))
+        return self.is_visible('xpath', self.__menu.format(name), 'menu')

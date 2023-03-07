@@ -1,7 +1,6 @@
 from selenium.webdriver.remote.webelement import WebElement
 from base.seleniumbase import SeleniumBase
 from base.utils import Utils
-from time import sleep
 
 
 class Vehicle(SeleniumBase):
@@ -29,8 +28,8 @@ class Vehicle(SeleniumBase):
         self.UPLOAD_STAT = "Успешно"
 
     def get_button(self, name: str) -> WebElement:
-        """ кнопка видна и имеет вес """
-        return self.is_visible('xpath', self.__button.format(name), 'button')
+        """ кнопка видна и кликабельна """
+        return self.to_be_clickable('xpath', self.__button.format(name), 'button')
 
     def get_not_button(self, name: str) -> bool:
         """ кнопка не видна"""
@@ -83,11 +82,10 @@ class Vehicle(SeleniumBase):
 
     def get_upload(self) -> WebElement:
         """ область для загрузки файлов. JS даем области вес и видимость """
-        self.driver.execute_script('document.querySelector("input[name = file]").style.visibility = "visible"')
-        self.driver.execute_script('document.querySelector("input[name = file]").style.width = "10px"')
-        self.driver.execute_script('document.querySelector("input[name = file]").style.height = "10px"')
-        sleep(1)
-        return self.is_visible('css', self.__upload, 'upload')
+        # self.driver.execute_script('document.querySelector("input[name = file]").style.visibility = "visible"')
+        # self.driver.execute_script('document.querySelector("input[name = file]").style.width = "10px"')
+        # self.driver.execute_script('document.querySelector("input[name = file]").style.height = "10px"')
+        return self.find_element('css', self.__upload)
 
     def get_upload_stat(self) -> str:
         """ проверка статуса загрузки """
