@@ -172,7 +172,7 @@ class TestVehicle:
         with allure.step("загрузка файла"):
             vehicle.get_upload().send_keys(config.url_file)
         with allure.step('Ожидание загрузки файла'):
-            assert vehicle.get_button("Загрузить")
+            assert vehicle.get_button("Загрузить1")
         # конец заполнения
         with allure.step('Загрузить'):
             vehicle.get_button("Загрузить").click()
