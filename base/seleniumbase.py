@@ -58,4 +58,5 @@ class SeleniumBase:
                                  locator_name)
 
     def find_element(self, find_by: str, locator: str) -> WebElement:
+        """ Неявное ожидание"""
         return self.driver.find_element(self.__get_selenium_by(find_by), locator)
