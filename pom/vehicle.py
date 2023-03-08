@@ -10,10 +10,9 @@ class Vehicle(SeleniumBase):
         self.__button: str = '//button[text()="{}"]'
         self.__accordion_chapter: str = '//div[text()="{}"]'
         self.__input: str = '//span[text()="{}"]/parent::label//span//input'
-        self.__drop_down: str = '//span[text()="{}"]/..//div[@role]'
-        self.__drop_down_find: str = '//input[@placeholder="Поиск"]'
-        self.__drop_down_find1: str = '//input[@placeholder="Поиск..."]'
-        self.__drop_down_meaning: str = '//span[text()="{}"]'
+        self.__drop_down: str = '//span[text()="{}"]/..//div'
+        self.__drop_down_find: str = '//input[contains(@placeholder,"Поиск")]'
+        self.__drop_down_meaning: str = '//span[contains(text(),"{}")]'
         # не перевести в универсальные
         self.__doc_vehicle_series: str = '//*[@id="vehicle-form"]/div[4]/div[2]/div/div[2]/label[1]/span[2]/input'
         self.__doc_vehicle_number: str = '//*[@id="vehicle-form"]/div[4]/div[2]/div/div[2]/label[2]/span[2]/input'
@@ -50,10 +49,6 @@ class Vehicle(SeleniumBase):
     def get_drop_down_find(self) -> WebElement:
         """ иск внутри выпадающего списка """
         return self.is_visible('xpath', self.__drop_down_find, 'drop_down_find')
-
-    def get_drop_down_find1(self) -> WebElement:
-        """ поиск внутри выпадающего списка """
-        return self.is_visible('xpath', self.__drop_down_find1, 'drop_down_find1')
 
     def get_drop_down_meaning(self, name: str) -> WebElement:
         """ выбрать значение найденого элемента выпадающего списка """
