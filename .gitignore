@@ -1,7 +1,7 @@
-/.pytest_cache
-/img
-/report
-/venv
+.pytest_cache
+.idea
+report
+venv
+img
 config.py
 __init__.py
-/.idea
