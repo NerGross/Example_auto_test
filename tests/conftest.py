@@ -25,14 +25,18 @@ def get_webdriver(get_chrome_options):
     return driver
 
 
+@pytest.fixture(params=config.urls)
+def url(request):
+    return request.param
+
+
 @pytest.fixture(scope='function')
-def setup(request, get_webdriver):
+def setup(request, get_webdriver, url):
     driver = get_webdriver
-    url = config.url_dev_transfer
-    # url = config.url_dev
+    url = url
     if request.cls is not None:
         request.cls.driver = driver
     driver.get(url)
-    yield driver
+    yield
     driver.delete_all_cookies()
     driver.quit()

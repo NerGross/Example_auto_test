@@ -5,3 +5,4 @@ venv
 img
 config.py
 __init__.py
+/.idea
