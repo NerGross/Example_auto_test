@@ -2,8 +2,8 @@ import allure
 import pytest
 import config
 from datetime import datetime
-from pom.enter import Enter
-from pom.vehicle import Vehicle
+from TestVehicle.pom.enter import Enter
+from TestVehicle.pom.vehicle import Vehicle
 from random import choices
 from openpyxl import load_workbook
 
@@ -16,11 +16,16 @@ class TestVehicle:
         with allure.step("Загрузки страницы ввода логина и пароля"):
             enter.get_button("Войти")
         with allure.step('Вход в ЛК'):
-            enter.get_auth("Логин").send_keys(config.enter["l_curator"])
-            enter.get_auth("Пароль").send_keys(config.enter["p_curator"])
+            enter.get_auth("Логин").send_keys(config.enter["l_employee"])
+            enter.get_auth("Пароль").send_keys(config.enter["p_employee"])
             enter.get_button("Войти").click()
         with allure.step("Загрузки страницы выбор компании"):
             enter.get_not_button("Войти")
+            assert enter.get_company(config.enter["company_branch"])
+        with allure.step('Выбор организации'):
+            enter.get_company(config.enter["company_branch"]).click()
+        with allure.step("Загрузки страницы Договоры"):
+            enter.get_not_company(config.enter["company_branch"])
             assert enter.get_drop_down_meaning("Страхование ТС")
         with allure.step('Переход по меню'):
             enter.get_menu("Объекты страхования").click()
@@ -28,7 +33,7 @@ class TestVehicle:
         with allure.step("Транспортные средства"):
             enter.get_not_drop_down_meaning("Страхование ТС")
 
-    @allure.story('Ручное добавление ТС CК')
+    @allure.story('Ручное добавление ТС CС')
     def test_manual(self):
         """
         Ручное добавление ТС
@@ -73,8 +78,7 @@ class TestVehicle:
             vehicle.get_drop_down("Тип ТС").click()
             vehicle.get_drop_down_find().send_keys(config.vehicle_dict["Тип ТС"])
             vehicle.get_drop_down_meaning(config.vehicle_dict["Тип ТС"]).click()
-        # with allure.step("Мощность, л.с. (для категории В)"):
-        #    vehicle.get__input("Мощность, л.с. (для категории В)").send_keys(config.vehicle_dict["Мощность"])
+        150
         with allure.step("Год выпуска"):
             current_day = datetime.now()
             vehicle.get__input("Год выпуска").send_keys(current_day.year)
@@ -87,14 +91,6 @@ class TestVehicle:
             vehicle.get__input("VIN").send_keys(VIN)
         with allure.step("Закрытие раздела ТС"):
             vehicle.get_accordion_chapter("Транспортное средство").click()
-        # Раздел "Страхователь"
-        with allure.step("Отрытие раздела Страхователь"):
-            vehicle.get_accordion_chapter("Страхователь").click()
-        with allure.step("Компания-страхователь"):
-            vehicle.get_drop_down("Компания-страхователь").click()
-            vehicle.get_drop_down_meaning(config.vehicle_dict["Компания"]).click()
-        with allure.step("Закрытие раздела Страхователь"):
-            vehicle.get_accordion_chapter("Страхователь").click()
         # Раздел "документы на ТС"
         with allure.step("Открытие раздела докумаент на  ТС"):
             vehicle.get_accordion_chapter("Документ на ТС").click()
@@ -139,7 +135,7 @@ class TestVehicle:
                 result = False
             assert result == True
 
-    @allure.story('Импорт ТС CК')
+    @allure.story('Импорт ТС CС')
     def test_import(self):
         """
         Импорт ТС
@@ -152,6 +148,7 @@ class TestVehicle:
         with allure.step("Переход в импорт"):
             vehicle.get_button("Загрузить ТС из файла").click()
         with allure.step("Загрузки страницы импорта ТС"):
+            # vehicle.get_not_button("Добавить ТС")
             assert vehicle.get_button("Закрыть")
         with allure.step("Формируем файл"):
             wb = load_workbook(config.url_file)
@@ -165,9 +162,6 @@ class TestVehicle:
             sheet['S4'] = ("00{:02}{:02}".format(current_day.day, current_day.month))
             wb.save(config.url_file)
             wb.close()
-        with allure.step("Компания-страхователь"):
-            vehicle.get_drop_down("Компания-страхователь").click()
-            vehicle.get_drop_down_meaning(config.vehicle_dict["Компания"]).click()
         with allure.step("Выбор шаблона"):
             if vehicle.get_template().text != "Шаблон ТС (стандартный)":
                 vehicle.get_template().click()
@@ -177,7 +171,7 @@ class TestVehicle:
         with allure.step("загрузка файла"):
             vehicle.get_upload().send_keys(config.url_file)
         with allure.step('Ожидание загрузки файла'):
-            assert vehicle.get_button("Загрузить1")
+            assert vehicle.get_button("Загрузить")
         # конец заполнения
         with allure.step('Загрузить'):
             vehicle.get_button("Загрузить").click()

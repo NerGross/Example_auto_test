@@ -2,7 +2,7 @@
 .idea
 report
 venv
-img
+TestOrder/file
+TestVehicle/file
 config.py
 __init__.py
-/.idea
