@@ -2,7 +2,7 @@ from selenium.webdriver.remote.webelement import WebElement
 from base.seleniumbase import SeleniumBase
 
 
-class Enter(SeleniumBase):
+class EnterLocator(SeleniumBase):
     def __init__(self, driver):
         super().__init__(driver)
         # Вход

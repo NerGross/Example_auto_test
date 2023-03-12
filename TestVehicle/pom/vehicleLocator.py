@@ -3,7 +3,7 @@ from base.seleniumbase import SeleniumBase
 from base.utils import Utils
 
 
-class Vehicle(SeleniumBase):
+class VehicleLocator(SeleniumBase):
     def __init__(self, driver):
         super().__init__(driver)
         # ТС

@@ -1,8 +1,9 @@
 import pytest
+import config
 from selenium import webdriver
+from TestEnter.pom.enterFixture import EnterFixtureTrue
 from selenium.webdriver.chrome.options import Options as chrome_options
 from selenium.webdriver.chrome.service import Service
-import config
 
 
 @pytest.fixture
@@ -40,3 +41,8 @@ def setup(request, get_webdriver, url):
     yield
     driver.delete_all_cookies()
     driver.quit()
+
+
+@pytest.fixture
+def login():
+    return EnterFixtureTrue.enter
