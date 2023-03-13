@@ -1,7 +1,7 @@
 import pytest
 import config
 from selenium import webdriver
-from TestEnter.pom.enterFixture import EnterVFixture
+from TestEnter.pom.enterFixture import EnterFixture
 from selenium.webdriver.chrome.options import Options as chrome_options
 from selenium.webdriver.chrome.service import Service
 
@@ -45,4 +45,4 @@ def setup(request, get_webdriver, url):
 
 @pytest.fixture(scope='function')
 def enterFixture():
-    return EnterVFixture
+    return EnterFixture

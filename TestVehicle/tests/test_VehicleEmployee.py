@@ -12,6 +12,7 @@ class TestVehicle:
         """
         enterFixture.enter_SS(self)
         enterFixture.transition_to_vehicle(self)
+        vehicleManualFixture.vehicle_open(self)
         vehicleManualFixture.vehicle(self)
         vehicleManualFixture.vehicle_doc_TC(self)
         vehicleManualFixture.vehicle_doc_TO(self)
@@ -34,7 +35,7 @@ class TestVehicle:
         """
         Импорт ТС для СC
         """
-        enterFixture.enter(self)
+        enterFixture.enter_SS(self)
         enterFixture.transition_to_vehicle(self)
         vehicleImportFixture.vehicle_open(self)
         vehicleImportFixture.vehicle_file(self)

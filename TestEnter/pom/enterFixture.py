@@ -3,7 +3,7 @@ import config
 from TestEnter.pom.enterLocator import EnterLocator
 
 
-class EnterVFixture:
+class EnterFixture:
     def __init__(self):
         self.driver = None
 
@@ -31,6 +31,11 @@ class EnterVFixture:
             enter.get_button("Войти").click()
         with allure.step("Загрузки страницы выбор компании"):
             enter.get_not_button("Войти")
+            assert enter.get_drop_down_meaning("Страхование ТС")
+        with allure.step('Выбор организации'):
+            enter.get_company(config.enter["company_branch"]).click()
+        with allure.step("Загрузки страницы Договоры"):
+            enter.get_not_company(config.enter["company_branch"])
             assert enter.get_drop_down_meaning("Страхование ТС")
 
     def transition_to_vehicle(self):
