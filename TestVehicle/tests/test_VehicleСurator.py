@@ -1,73 +1,46 @@
 import allure
 import pytest
-import config
-from datetime import datetime
-
-from TestVehicle.pom.vehicleLocator import VehicleLocator
-from random import choices
-from openpyxl import load_workbook
 
 
 @pytest.mark.usefixtures('setup')
 class TestVehicle:
 
-    @allure.story('Ручное добавление ТС CК')
-    def test_manual(self, login, vehicleFixture):
+    @allure.story('Ручное добавление ТС c заполнением всех полей для CК')
+    def test_manual(self, enterFixture, vehicleManualFixture):
         """
-        Ручное добавление ТС
+        Ручное добавление ТС c заполнением всех полей для CК
         """
-        login(self)
-        vehicleFixture.vehicle_open_manual(self)
-        vehicleFixture.vehicle(self)
-        vehicleFixture.vehicle_owner(self)
-        vehicleFixture.vehicle_doc_TC(self)
-        vehicleFixture.vehicle_doc_TO(self)
-        vehicleFixture.vehicle_close(self)
+        enterFixture.enter_SK(self)
+        enterFixture.transition_to_vehicle(self)
+        vehicleManualFixture.vehicle_open(self)
+        vehicleManualFixture.vehicle(self)
+        vehicleManualFixture.vehicle_owner(self)
+        vehicleManualFixture.vehicle_doc_TC(self)
+        vehicleManualFixture.vehicle_doc_TO(self)
+        vehicleManualFixture.vehicle_close(self)
+
+    @allure.story('Ручное добавление ТС c заполнением обязательных полей для СК')
+    def test_manual(self, enterFixture, vehicleManualFixture):
+        """
+        Ручное добавление ТС c заполнением обязательных полей для СК
+        """
+        enterFixture.enter_SK(self)
+        enterFixture.transition_to_vehicle(self)
+        vehicleManualFixture.vehicle_open(self)
+        vehicleManualFixture.vehicle(self)
+        vehicleManualFixture.vehicle_owner(self)
+        vehicleManualFixture.vehicle_doc_TC(self)
+        vehicleManualFixture.vehicle_close(self)
 
     @allure.story('Импорт ТС CК')
-    def test_import(self):
+    def test_import(self, enterFixture, vehicleImportFixture):
         """
-        Импорт ТС
+        Импорт ТС для СК
         """
-        vehicle = VehicleLocator(self.driver)
-        with allure.step("Вход в ЛК"):
-            TestVehicle().enter()
-        with allure.step("Загрузки страницы ТС"):
-            assert vehicle.get_button("Добавить ТС")
-        with allure.step("Переход в импорт"):
-            vehicle.get_button("Загрузить ТС из файла").click()
-        with allure.step("Загрузки страницы импорта ТС"):
-            assert vehicle.get_button("Закрыть")
-        with allure.step("Формируем файл"):
-            wb = load_workbook(config.url_file)
-            sheet = wb.active
-            current_day = datetime.now()
-            sheet['B4'] = config.vehicle_dict["ИНН_Моэск"]
-            sheet['C4'] = config.vehicle_dict["КПП_Моэск"]
-            sheet['I4'] = "".join(choices(config.str_vin, k=17))
-            sheet['L4'] = "".join((choices(config.str_rus, k=1)) + (choices(config.str_number, k=3)) +
-                                  (choices(config.str_rus, k=2)) + (choices(config.str_number, k=3)))
-            sheet['S4'] = ("00{:02}{:02}".format(current_day.day, current_day.month))
-            wb.save(config.url_file)
-            wb.close()
-        with allure.step("Компания-страхователь"):
-            vehicle.get_drop_down("Компания-страхователь").click()
-            vehicle.get_drop_down_meaning(config.vehicle_dict["Компания"]).click()
-        with allure.step("Выбор шаблона"):
-            if vehicle.get_template().text != "Шаблон ТС (стандартный)":
-                vehicle.get_template().click()
-                vehicle.get_drop_down_find().send_keys("Шаблон ТС (стандартный)")
-                vehicle.get_drop_down_find().send_keys('\n')
-                vehicle.get_drop_down_meaning("Шаблон ТС (стандартный)").click()
-        with allure.step("загрузка файла"):
-            vehicle.get_upload().send_keys(config.url_file)
-        with allure.step('Ожидание загрузки файла'):
-            assert vehicle.get_button("Загрузить1")
-        # конец заполнения
-        with allure.step('Загрузить'):
-            vehicle.get_button("Загрузить").click()
-        with allure.step("Загрузки промежуточной таблицы"):
-            vehicle.get_not_button("Загрузить")
-            assert vehicle.get_button("К списку ТС")
-        with allure.step("Проверка добавления ТС"):
-            assert vehicle.get_upload_stat() == vehicle.UPLOAD_STAT
+        enterFixture.enter_SK(self)
+        enterFixture.transition_to_vehicle(self)
+        vehicleImportFixture.vehicle_open(self)
+        vehicleImportFixture.vehicle_owner(self)
+        vehicleImportFixture.vehicle_file(self)
+        vehicleImportFixture.vehicle_import(self)
+        vehicleImportFixture.vehicle_close(self)

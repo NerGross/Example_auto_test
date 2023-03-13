@@ -5,13 +5,13 @@ from TestVehicle.pom.vehicleLocator import VehicleLocator
 from random import choices
 
 
-class VehicleFixture:
-    VIN = choices(config.str_vin, k=17)
+class VehicleManualFixture:
+    __VIN = choices(config.str_vin, k=17)
 
     def __init__(self):
         self.driver = None
 
-    def vehicle_open_manual(self):
+    def vehicle_open(self):
         """Окрытие формы добавлнеия ТС"""
         vehicle = VehicleLocator(self.driver)
         with allure.step("Загрузки страницы ТС"):
@@ -63,7 +63,7 @@ class VehicleFixture:
                 (choices(config.str_rus, k=1)) + (choices(config.str_number, k=3)) + (choices(config.str_rus, k=2))
                 + (choices(config.str_number, k=3)))
         with allure.step("VIN"):
-            vehicle.get__input("VIN").send_keys(VehicleFixture.VIN)
+            vehicle.get__input("VIN").send_keys(VehicleManualFixture.__VIN)
         with allure.step("Закрытие раздела ТС"):
             vehicle.get_accordion_chapter("Транспортное средство").click()
 
@@ -92,8 +92,7 @@ class VehicleFixture:
         with allure.step('Серия документа о регистрации'):
             vehicle.get_doc_vehicle_series().send_keys(choices(config.str_number, k=2) + choices(config.str_rus, k=2))
         with allure.step('Номер документа о регистрации'):
-            vehicle.get_doc_vehicle_number().send_keys(
-                "00{:02}{:02}".format(current_day.day, current_day.month))
+            vehicle.get_doc_vehicle_number().send_keys(choices(config.str_number, k=6))
         with allure.step('Номер документа о регистрации'):
             vehicle.get_doc_vehicle_date().send_keys(
                 "{:02}.{:02}.{:04}".format(current_day.day, current_day.month, current_day.year))
@@ -126,7 +125,7 @@ class VehicleFixture:
             vehicle.get_not_button("Сохранить")
             assert vehicle.get_button("Добавить ТС")
         with allure.step("Проверка добавления ТС"):
-            if "".join(VehicleFixture.VIN) in vehicle.get_vehicle_Journal():
+            if "".join(VehicleManualFixture.__VIN) in vehicle.get_vehicle_Journal():
                 result = True
             else:
                 result = False
