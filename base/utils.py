@@ -3,9 +3,7 @@ from selenium.webdriver.remote.webelement import WebElement
 
 class Utils:
     """
-       Описывает общие методы работы python.
-       1. для упрощения рефракторинга используется аннотация типов;
-       2. переменные используемые внутри класса инкапсулировать как __private;
+       Описывает общие методы работы.
        """
 
     # получаем строковый список -> возвращаем строку с разделителем
@@ -15,7 +13,7 @@ class Utils:
 
     # получаем список WebElement -> возвращаем строковый список
     @staticmethod
-    def get_text_from_webelements(elements: list[WebElement]) -> list[str]:
+    def get_text_from_webelements(elements) -> list[str]:
         return [element.text for element in elements]
 
     # получаем список WebElement, искомое название -> возвращаем WebElement

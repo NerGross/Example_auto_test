@@ -6,38 +6,38 @@ import pytest
 class TestVehicle:
 
     @allure.story('Ручное добавление ТС c заполнением всех полей для CС')
-    def test_manual(self, enterFixture, vehicleManualFixture):
+    def test_manual(self, enter_fixture, vehicle_manual_fixture):
         """
-        Ручное добавление ТС c заполнением всех полей для CС
+        Ручное добавление ТС C заполнением всех полей для CC
         """
-        enterFixture.enter_SS(self)
-        enterFixture.transition_to_vehicle(self)
-        vehicleManualFixture.vehicle_open(self)
-        vehicleManualFixture.vehicle(self)
-        vehicleManualFixture.vehicle_doc_TC(self)
-        vehicleManualFixture.vehicle_doc_TO(self)
-        vehicleManualFixture.vehicle_close(self)
+        enter_fixture.enter_sk(self)
+        enter_fixture.transition_to_vehicle(self)
+        vehicle_manual_fixture.vehicle_open(self)
+        vehicle_manual_fixture.vehicle(self)
+        vehicle_manual_fixture.vehicle_doc(self)
+        vehicle_manual_fixture.vehicle_doc_to(self)
+        vehicle_manual_fixture.vehicle_close(self)
 
     @allure.story('Ручное добавление ТС c заполнением обязательных полей для СC')
-    def test_manual(self, enterFixture, vehicleManualFixture):
+    def test_manual(self, enter_fixture, vehicle_manual_fixture):
         """
-        Ручное добавление ТС c заполнением обязательных полей для СC
+        Ручное добавление ТС с заполнением обязательных полей для CC
         """
-        enterFixture.enter_SS(self)
-        enterFixture.transition_to_vehicle(self)
-        vehicleManualFixture.vehicle_open(self)
-        vehicleManualFixture.vehicle(self)
-        vehicleManualFixture.vehicle_doc_TC(self)
-        vehicleManualFixture.vehicle_close(self)
+        enter_fixture.enter_sk(self)
+        enter_fixture.transition_to_vehicle(self)
+        vehicle_manual_fixture.vehicle_open(self)
+        vehicle_manual_fixture.vehicle(self)
+        vehicle_manual_fixture.vehicle_doc(self)
+        vehicle_manual_fixture.vehicle_close(self)
 
     @allure.story('Импорт ТС CС')
-    def test_import(self, enterFixture, vehicleImportFixture):
+    def test_import(self, enter_fixture, vehicle_import_fixture):
         """
-        Импорт ТС для СC
+        Импорт ТС для CC
         """
-        enterFixture.enter_SS(self)
-        enterFixture.transition_to_vehicle(self)
-        vehicleImportFixture.vehicle_open(self)
-        vehicleImportFixture.vehicle_file(self)
-        vehicleImportFixture.vehicle_import(self)
-        vehicleImportFixture.vehicle_close(self)
+        enter_fixture.enter_sk(self)
+        enter_fixture.transition_to_vehicle(self)
+        vehicle_import_fixture.vehicle_open(self)
+        vehicle_import_fixture.vehicle_file(self)
+        vehicle_import_fixture.vehicle_import(self)
+        vehicle_import_fixture.vehicle_close(self)

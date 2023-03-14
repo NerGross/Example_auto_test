@@ -2,16 +2,16 @@ import pytest
 import config
 from selenium import webdriver
 from TestEnter.pom.enterFixture import EnterFixture
-from selenium.webdriver.chrome.options import Options as chrome_options
+from selenium.webdriver.chrome.options import Options as ChromeOptions
 from selenium.webdriver.chrome.service import Service
 
 
 @pytest.fixture
 def get_chrome_options():
-    options = chrome_options()
+    options = ChromeOptions()
     options.add_argument('chrome')
     options.add_argument('--start-maximized')
-    # options.add_argument('--auto-open-devtools-for-tabs')
+    #options.add_argument('--auto-open-devtools-for-tabs')
     options.add_argument('--ash-host-window-bounds=1920x1080')
     options.add_argument('--ignore-certificate-errors')  # игнорировать ошибку сертификата
     options.add_argument('--ignore-ssl-errors')  # игнорировать ошибку ssl
@@ -44,5 +44,5 @@ def setup(request, get_webdriver, url):
 
 
 @pytest.fixture(scope='function')
-def enterFixture():
+def enter_fixture():
     return EnterFixture

@@ -27,65 +27,65 @@ class VehicleLocator(SeleniumBase):
         self.UPLOAD_STAT = "Успешно"
 
     def get_button(self, name: str) -> WebElement:
-        """ кнопка видна и кликабельна """
+        """Кнопка видна и кликабельна """
         return self.to_be_clickable('xpath', self.__button.format(name), 'button')
 
     def get_not_button(self, name: str) -> bool:
-        """ кнопка не видна"""
+        """Кнопка не видна"""
         return self.is_not_visible('xpath', self.__button.format(name), 'not_button')
 
     def get_accordion_chapter(self, name: str) -> WebElement:
-        """ выбор раздела аккардеона """
+        """Выбор раздела аккордеона """
         return self.is_visible('xpath', self.__accordion_chapter.format(name), 'accordion_chapter')
 
     def get__input(self, name: str) -> WebElement:
-        """ Выбор поля (implicitly_wait)"""
+        """Выбор поля (implicitly_wait)"""
         return self.find_element('xpath', self.__input.format(name))
 
     def get_drop_down(self, name: str) -> WebElement:
-        """ Выбор выпадающего списка """
+        """Выбор выпадающего списка """
         return self.is_visible('xpath', self.__drop_down.format(name), 'drop_down')
 
     def get_drop_down_find(self) -> WebElement:
-        """ иск внутри выпадающего списка """
+        """Поиск внутри выпадающего списка """
         return self.is_visible('xpath', self.__drop_down_find, 'drop_down_find')
 
     def get_drop_down_meaning(self, name: str) -> WebElement:
-        """ выбрать значение найденого элемента выпадающего списка """
+        """Выбрать значение найденного элемента выпадающего списка """
         return self.is_visible('xpath', self.__drop_down_meaning.format(name), 'drop_down_meaning')
 
     def get_doc_vehicle_series(self) -> WebElement:
-        """ Серия документа о регистрации """
+        """Серия документа о регистрации """
         return self.is_visible('xpath', self.__doc_vehicle_series, 'doc_vehicle_series')
 
     def get_doc_vehicle_number(self) -> WebElement:
-        """ номер документа о регистрации """
+        """Номер документа о регистрации """
         return self.is_visible('xpath', self.__doc_vehicle_number, 'doc_vehicle_number')
 
     def get_doc_vehicle_date(self) -> WebElement:
-        """ дата документа о регистрации """
+        """Дата документа о регистрации """
         return self.is_visible('xpath', self.__doc_vehicle_date, 'doc_vehicle_date')
 
-    def get_doc_TO_date(self) -> WebElement:
-        """  дата документа о регистрации """
+    def get_doc_to_date(self) -> WebElement:
+        """Дата документа о регистрации """
         return self.is_visible('xpath', self.__doc_TO_date, 'doc_TO_date')
 
-    def get_vehicle_Journal(self) -> str:
-        """ Получаем журнал ТС -> список webElement """
+    def get_vehicle_journal(self) -> str:
+        """Получаем журнал ТС -> список webElement """
         vehicle_journal = self.are_visible('xpath', self.__vehicle_journal, 'vehicle_journal')
         return Utils.join_strings(Utils.get_text_from_webelements(vehicle_journal))
 
     def get_upload(self) -> WebElement:
-        """ область для загрузки файлов. JS даем области вес и видимость """
+        """Область для загрузки файлов. JS даем области вес и видимость """
         # self.driver.execute_script('document.querySelector("input[name = file]").style.visibility = "visible"')
         # self.driver.execute_script('document.querySelector("input[name = file]").style.width = "10px"')
         # self.driver.execute_script('document.querySelector("input[name = file]").style.height = "10px"')
         return self.find_element('css', self.__upload)
 
     def get_upload_stat(self) -> str:
-        """ проверка статуса загрузки """
+        """Проверка статуса загрузки """
         return self.is_visible('xpath', self.__upload_stat, 'upload_stat').text
 
     def get_template(self) -> WebElement:
-        """ шаблон загрузки"""
+        """Шаблон загрузки"""
         return self.is_visible('xpath', self.__template, 'template')

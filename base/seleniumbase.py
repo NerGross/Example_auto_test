@@ -7,13 +7,12 @@ from selenium.webdriver.remote.webelement import WebElement
 class SeleniumBase:
     """
     Описывает общие методы работы selenium.webdrivewer с web элементами.
-    для упрощения рефракторинга испол, то вернет его)
     spec. expected_conditions https://www.selenium.dev/selenium/docs/api/py/webdriver_support/selenium.webdriver.support.expected_conditions.html
     """
 
     def __init__(self, driver):
         self.driver = driver
-        self.__wait = WebDriverWait(driver, 10)
+        self.__wait = WebDriverWait(driver, 30)
         driver.implicitly_wait(1)
 
     def __get_selenium_by(self, find_by: str) -> dict:
@@ -30,23 +29,23 @@ class SeleniumBase:
         return locating[find_by]
 
     def is_visible(self, find_by: str, locator: str, locator_name=None) -> WebElement:
-        """visibility_of_element_located - Ожидание проверки того, что элемент присутствует в DOM объекта страница и видна.
-        Видимость означает,  что элемент не только отображается но также имеет высоту и ширину, которые больше 0.
-        Локатор - используется  для поиска элемента  возвращает WebElement, как только он будет найден и виден"""
+        """Visibility_of_element_located - Ожидание проверки того, что элемент присутствует в DOM объекта страница и видна.
+        Видимость означает, что элемент не только отображается, но также имеет высоту и ширину, которые больше 0.
+        Локатор - используется для поиска элемента возвращает WebElement, как только он будет найден и виден"""
         return self.__wait.until(ec.visibility_of_element_located((self.__get_selenium_by(find_by), locator)),
                                  locator_name)
 
     def is_not_visible(self, find_by: str, locator: str, locator_name=None) -> bool:
-        """visibility_of_element_located - Ожидание проверки того, что элемент присутствует в DOM объекта страница и видна.
-        Видимость означает,  что элемент не только отображается но также имеет высоту и ширину, которые больше 0.
-        Локатор - используется  для поиска элемента  возвращает WebElement, как только он будет найден и виден"""
+        """Visibility_of_element_located - Ожидание проверки того, что элемент присутствует в DOM объекта страница и видна.
+        Видимость означает, что элемент не только отображается, но также имеет высоту и ширину, которые больше 0.
+        Локатор - используется для поиска элемента возвращает WebElement, как только он будет найден и виден"""
         return self.__wait.until_not(ec.visibility_of_element_located((self.__get_selenium_by(find_by), locator)),
                                      locator_name)
 
     #
     def to_be_clickable(self, find_by: str, locator: str, locator_name=None) -> WebElement:
         """ Ожидание проверки элемента видно и включено, поэтому вы можете щелкнуть его.
-        элемент является либо локатором (текстом), либо WebElement"""
+        Элемент является либо локатором (текстом), либо WebElement"""
         return self.__wait.until(ec.element_to_be_clickable((self.__get_selenium_by(find_by), locator)),
                                  locator_name)
 

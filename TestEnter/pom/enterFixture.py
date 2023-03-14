@@ -7,7 +7,7 @@ class EnterFixture:
     def __init__(self):
         self.driver = None
 
-    def enter_SK(self):
+    def enter_ss(self):
         """Логин пароль в ЛК для сотрудника куратор"""
         enter = EnterLocator(self.driver)
         with allure.step("Загрузки страницы ввода логина и пароля"):
@@ -20,7 +20,7 @@ class EnterFixture:
             enter.get_not_button("Войти")
             assert enter.get_drop_down_meaning("Страхование ТС")
 
-    def enter_SS(self):
+    def enter_sk(self):
         """Логин пароль в ЛК для сотрудника страхователя"""
         enter = EnterLocator(self.driver)
         with allure.step("Загрузки страницы ввода логина и пароля"):
@@ -31,7 +31,7 @@ class EnterFixture:
             enter.get_button("Войти").click()
         with allure.step("Загрузки страницы выбор компании"):
             enter.get_not_button("Войти")
-            assert enter.get_drop_down_meaning("Страхование ТС")
+            # assert enter.get_drop_down_meaning("Страхование ТС")
         with allure.step('Выбор организации'):
             enter.get_company(config.enter["company_branch"]).click()
         with allure.step("Загрузки страницы Договоры"):

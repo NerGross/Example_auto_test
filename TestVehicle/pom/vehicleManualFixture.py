@@ -12,7 +12,7 @@ class VehicleManualFixture:
         self.driver = None
 
     def vehicle_open(self):
-        """Окрытие формы добавлнеия ТС"""
+        """Открытие формы добавления ТС"""
         vehicle = VehicleLocator(self.driver)
         with allure.step("Загрузки страницы ТС"):
             assert vehicle.get_button("Добавить ТС")
@@ -78,11 +78,11 @@ class VehicleManualFixture:
         with allure.step("Закрытие раздела Страхователь"):
             vehicle.get_accordion_chapter("Страхователь").click()
 
-    def vehicle_doc_TC(self):
-        """Раздел "Документа ны ТC"""
+    def vehicle_doc(self):
+        """Раздел "Документа на ТС"""
         vehicle = VehicleLocator(self.driver)
         current_day = datetime.now()
-        with allure.step("Открытие раздела докумаент на  ТС"):
+        with allure.step("Открытие раздела документ на  ТС"):
             vehicle.get_accordion_chapter("Документ на ТС").click()
         with allure.step("Тип документа TC"):
             vehicle.get_drop_down("Тип документа TC").click()
@@ -96,10 +96,10 @@ class VehicleManualFixture:
         with allure.step('Номер документа о регистрации'):
             vehicle.get_doc_vehicle_date().send_keys(
                 "{:02}.{:02}.{:04}".format(current_day.day, current_day.month, current_day.year))
-        with allure.step("Закрытие раздела докумаент на  ТС"):
+        with allure.step("Закрытие раздела документ на  ТС"):
             vehicle.get_accordion_chapter("Документ на ТС").click()
 
-    def vehicle_doc_TO(self):
+    def vehicle_doc_to(self):
         """Раздел "Документа ны ТО"""
         vehicle = VehicleLocator(self.driver)
         current_day = datetime.now()
@@ -113,19 +113,19 @@ class VehicleManualFixture:
         with allure.step("Номер документа TO"):
             vehicle.get__input("Номер документа TO").send_keys(choices(config.str_number, k=21))
         with allure.step("Дата выдачи документа TO"):
-            vehicle.get_doc_TO_date().send_keys(
+            vehicle.get_doc_to_date().send_keys(
                 "{:02}.{:02}.{:04}".format(current_day.day, current_day.month, current_day.year))
 
     def vehicle_close(self):
         """Закрытие формы добавления ТС"""
         vehicle = VehicleLocator(self.driver)
-        with allure.step('Cохраняем'):
+        with allure.step('Сохранить'):
             vehicle.get_button("Сохранить").click()
         with allure.step("Загрузки страницы журнал ТС"):
             vehicle.get_not_button("Сохранить")
             assert vehicle.get_button("Добавить ТС")
         with allure.step("Проверка добавления ТС"):
-            if "".join(VehicleManualFixture.__VIN) in vehicle.get_vehicle_Journal():
+            if "".join(VehicleManualFixture.__VIN) in vehicle.get_vehicle_journal():
                 result = True
             else:
                 result = False

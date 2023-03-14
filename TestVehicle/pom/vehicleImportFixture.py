@@ -12,9 +12,9 @@ class VehicleImportFixture:
         self.driver = None
 
     def vehicle_open(self):
-        """Окрытие формы импорта ТС"""
+        """Открытие формЫ импорта ТС"""
         vehicle = VehicleLocator(self.driver)
-        with allure.step("Загрузки страницы ТС"):
+        with allure.step("Загрузка страницы ТС"):
             assert vehicle.get_button("Добавить ТС")
         with allure.step("Переход в импорт"):
             vehicle.get_button("Загрузить ТС из файла").click()
@@ -42,9 +42,9 @@ class VehicleImportFixture:
             vehicle.get_drop_down("Компания-страхователь").click()
             vehicle.get_drop_down_meaning(config.vehicle_dict["Компания"]).click()
 
-    def vehicle_file(self):
+    @staticmethod
+    def vehicle_file():
         """Раздел "Документа ны ТО"""
-        vehicle = VehicleLocator(self.driver)
         with allure.step("Формируем файл"):
             wb = load_workbook(config.url_file)
             sheet = wb.active
