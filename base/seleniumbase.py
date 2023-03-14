@@ -15,7 +15,8 @@ class SeleniumBase:
         self.__wait = WebDriverWait(driver, 30)
         driver.implicitly_wait(1)
 
-    def __get_selenium_by(self, find_by: str) -> dict:
+    @staticmethod
+    def __get_selenium_by(find_by: str) -> dict:
         find_by = find_by.lower()
         locating = {
             'css': By.CSS_SELECTOR,
