@@ -1,8 +1,8 @@
-.pytest_cache
-.idea
-report
-venv
-TestOrder/file
-TestVehicle/file
+/.pytest_cache
+/.idea/
+/report/
+/venv/
+/TestOrder/file/
+/TestVehicle/file/
 config.py
 __init__.py

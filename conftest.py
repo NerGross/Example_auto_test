@@ -11,7 +11,7 @@ def get_chrome_options():
     options = ChromeOptions()
     options.add_argument('chrome')
     options.add_argument('--start-maximized')
-    #options.add_argument('--auto-open-devtools-for-tabs')
+    # options.add_argument('--auto-open-devtools-for-tabs')
     options.add_argument('--ash-host-window-bounds=1920x1080')
     options.add_argument('--ignore-certificate-errors')  # игнорировать ошибку сертификата
     options.add_argument('--ignore-ssl-errors')  # игнорировать ошибку ssl
@@ -32,7 +32,7 @@ def url(request):
 
 
 @pytest.fixture(scope='function')
-def setup(request, get_webdriver, url):
+def setup(request, get_webdriver, url, enter_fixture):
     driver = get_webdriver
     url = url
     if request.cls is not None:

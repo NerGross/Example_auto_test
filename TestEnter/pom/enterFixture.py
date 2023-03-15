@@ -1,4 +1,6 @@
 import allure
+from openpyxl.reader.excel import load_workbook
+
 import config
 from TestEnter.pom.enterLocator import EnterLocator
 
@@ -44,3 +46,4 @@ class EnterFixture:
             enter.get_menu("Транспортные средства").click()
         with allure.step("Транспортные средства"):
             enter.get_not_drop_down_meaning("Страхование ТС")
+

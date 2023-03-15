@@ -1,8 +1,7 @@
 import allure
 import config
-from datetime import datetime
 from TestVehicle.pom.vehicleLocator import VehicleLocator
-from random import choices
+from random import choices, choice
 from openpyxl import load_workbook
 
 
@@ -43,24 +42,34 @@ class VehicleImportFixture:
             vehicle.get_drop_down_meaning(config.vehicle_dict["Компания"]).click()
 
     def vehicle_file(self):
-        """Раздел "Документа ны ТО"""
+        """Формирование файла со случайными параметрами"""
         with allure.step("Формируем файл"):
             wb = load_workbook(config.url_file)
             sheet = wb.active
-            current_day = datetime.now()
             sheet['B4'] = config.vehicle_dict["ИНН_Моэск"]
             sheet['C4'] = config.vehicle_dict["КПП_Моэск"]
-            #sheet['I4'] = "".join(choices(config.str_vin, k=17))
-            sheet['I4'] = ""
-            sheet['J4'] = "".join(choices(config.str_vin, k=17))
-            #sheet['J4'] = ""
-            #sheet['K4'] = "".join(choices(config.str_vin, k=17))
-            sheet['K4'] = ""
-            #sheet['L4'] = "".join((choices(config.str_rus, k=1)) + (choices(config.str_number, k=3)) +
-            #                      (choices(config.str_rus, k=2)) + (choices(config.str_number, k=3)))
-            sheet['L4'] = ""
+            key = ['I4', 'J4', 'K4', 'L4']
+            for i in key:
+                sheet[i] = ""
+            key_parameter = choice(key)
+            if key_parameter == 'L4':
+                sheet[key_parameter] = "".join((choices(config.str_rus, k=1)) + (choices(config.str_number, k=3)) +
+                                               (choices(config.str_rus, k=2)) + (choices(config.str_number, k=3)))
+            else:
+                sheet[key_parameter] = "".join(choices(config.str_vin, k=17))
             wb.save(config.url_file)
             wb.close()
+
+    def vehicle_file_addition(self):
+        """Формирование файла с параметрами внешней системы (для проверки автодополнения)"""
+        with allure.step("Формируем файл"):
+            wb = load_workbook(config.url_file_addition)
+            sheet = wb.active
+            for i in range(3, 14):
+                key = sheet.cell(row=4, column=i)
+                sheet[key] = ""
+        with allure.step("VIN"):
+            sheet['I4'] = config.vehicle_dict["VIN"]
 
     def vehicle_close(self):
         """Закрытие формы добавления ТС"""

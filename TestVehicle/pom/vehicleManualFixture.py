@@ -1,5 +1,3 @@
-import random
-
 import allure
 import config
 from datetime import datetime
@@ -58,15 +56,15 @@ class VehicleManualFixture:
         with allure.step("Год выпуска"):
             current_day = datetime.now()
             vehicle.get__input("Год выпуска").send_keys(current_day.year)
-        # key_parameter = choice["Регистрационный номер", "№ шасси", "№ кузова", "VIN"]
-        # if key_parameter == "Регистрационный номер":
-        with allure.step("Регистрационный номер"):
-            vehicle.get__input("Регистрационный номер").send_keys(
-                (choices(config.str_rus, k=1)) + (choices(config.str_number, k=3)) + (choices(config.str_rus, k=2))
-                + (choices(config.str_number, k=3)))
-        # else:
-        #    with allure.step(key_parameter):
-        #        vehicle.get__input(key_parameter).send_keys(VehicleManualFixture.__param)
+        key_parameter = choice(["Регистрационный номер", "№ шасси", "№ кузова", "VIN"])
+        if key_parameter == "Регистрационный номер":
+            with allure.step("Регистрационный номер"):
+                vehicle.get__input(key_parameter).send_keys(
+                    (choices(config.str_rus, k=1)) + (choices(config.str_number, k=3)) + (
+                        choices(config.str_rus, k=2)) + (choices(config.str_number, k=3)))
+        else:
+            with allure.step(key_parameter):
+                vehicle.get__input(key_parameter).send_keys(VehicleManualFixture.__param)
         with allure.step("Закрытие раздела ТС"):
             vehicle.get_accordion_chapter("Транспортное средство").click()
 
