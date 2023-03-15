@@ -31,7 +31,6 @@ class EnterFixture:
             enter.get_button("Войти").click()
         with allure.step("Загрузки страницы выбор компании"):
             enter.get_not_button("Войти")
-            # assert enter.get_drop_down_meaning("Страхование ТС")
         with allure.step('Выбор организации'):
             enter.get_company(config.enter["company_branch"]).click()
         with allure.step("Загрузки страницы Договоры"):

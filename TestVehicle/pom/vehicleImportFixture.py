@@ -42,8 +42,7 @@ class VehicleImportFixture:
             vehicle.get_drop_down("Компания-страхователь").click()
             vehicle.get_drop_down_meaning(config.vehicle_dict["Компания"]).click()
 
-    @staticmethod
-    def vehicle_file():
+    def vehicle_file(self):
         """Раздел "Документа ны ТО"""
         with allure.step("Формируем файл"):
             wb = load_workbook(config.url_file)
@@ -51,10 +50,15 @@ class VehicleImportFixture:
             current_day = datetime.now()
             sheet['B4'] = config.vehicle_dict["ИНН_Моэск"]
             sheet['C4'] = config.vehicle_dict["КПП_Моэск"]
-            sheet['I4'] = "".join(choices(config.str_vin, k=17))
-            sheet['L4'] = "".join((choices(config.str_rus, k=1)) + (choices(config.str_number, k=3)) +
-                                  (choices(config.str_rus, k=2)) + (choices(config.str_number, k=3)))
-            sheet['S4'] = ("00{:02}{:02}".format(current_day.day, current_day.month))
+            #sheet['I4'] = "".join(choices(config.str_vin, k=17))
+            sheet['I4'] = ""
+            sheet['J4'] = "".join(choices(config.str_vin, k=17))
+            #sheet['J4'] = ""
+            #sheet['K4'] = "".join(choices(config.str_vin, k=17))
+            sheet['K4'] = ""
+            #sheet['L4'] = "".join((choices(config.str_rus, k=1)) + (choices(config.str_number, k=3)) +
+            #                      (choices(config.str_rus, k=2)) + (choices(config.str_number, k=3)))
+            sheet['L4'] = ""
             wb.save(config.url_file)
             wb.close()
 

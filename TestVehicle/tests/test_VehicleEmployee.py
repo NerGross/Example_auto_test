@@ -1,12 +1,13 @@
 import allure
 import pytest
+from time import sleep
 
 
 @pytest.mark.usefixtures('setup')
 class TestVehicle:
 
     @allure.story('Ручное добавление ТС c заполнением всех полей для CС')
-    def test_manual(self, enter_fixture, vehicle_manual_fixture):
+    def test_manual_full(self, enter_fixture, vehicle_manual_fixture):
         """
         Ручное добавление ТС C заполнением всех полей для CC
         """
@@ -40,4 +41,5 @@ class TestVehicle:
         vehicle_import_fixture.vehicle_open(self)
         vehicle_import_fixture.vehicle_file(self)
         vehicle_import_fixture.vehicle_import(self)
+        sleep(30)
         vehicle_import_fixture.vehicle_close(self)

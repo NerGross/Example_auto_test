@@ -6,7 +6,7 @@ import pytest
 class TestVehicle:
 
     @allure.story('Ручное добавление ТС c заполнением всех полей для CК')
-    def test_manual(self, enter_fixture, vehicle_manual_fixture):
+    def test_manual_full(self, enter_fixture, vehicle_manual_fixture):
         """
         Ручное добавление ТС с заполнением всех полей для СК
         """

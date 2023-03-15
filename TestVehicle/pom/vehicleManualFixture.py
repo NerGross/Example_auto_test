@@ -1,12 +1,14 @@
+import random
+
 import allure
 import config
 from datetime import datetime
 from TestVehicle.pom.vehicleLocator import VehicleLocator
-from random import choices
+from random import choices, choice
 
 
 class VehicleManualFixture:
-    __VIN = choices(config.str_vin, k=17)
+    __param = choices(config.str_vin, k=17)
 
     def __init__(self):
         self.driver = None
@@ -53,17 +55,18 @@ class VehicleManualFixture:
             vehicle.get_drop_down("Тип ТС").click()
             vehicle.get_drop_down_find().send_keys(config.vehicle_dict["Тип ТС"])
             vehicle.get_drop_down_meaning(config.vehicle_dict["Тип ТС"]).click()
-        # with allure.step("Мощность, л.с. (для категории В)"):
-        #    vehicle.get__input("Мощность, л.с. (для категории В)").send_keys(config.vehicle_dict["Мощность"])
         with allure.step("Год выпуска"):
             current_day = datetime.now()
             vehicle.get__input("Год выпуска").send_keys(current_day.year)
+        # key_parameter = choice["Регистрационный номер", "№ шасси", "№ кузова", "VIN"]
+        # if key_parameter == "Регистрационный номер":
         with allure.step("Регистрационный номер"):
             vehicle.get__input("Регистрационный номер").send_keys(
                 (choices(config.str_rus, k=1)) + (choices(config.str_number, k=3)) + (choices(config.str_rus, k=2))
                 + (choices(config.str_number, k=3)))
-        with allure.step("VIN"):
-            vehicle.get__input("VIN").send_keys(VehicleManualFixture.__VIN)
+        # else:
+        #    with allure.step(key_parameter):
+        #        vehicle.get__input(key_parameter).send_keys(VehicleManualFixture.__param)
         with allure.step("Закрытие раздела ТС"):
             vehicle.get_accordion_chapter("Транспортное средство").click()
 
@@ -125,7 +128,7 @@ class VehicleManualFixture:
             vehicle.get_not_button("Сохранить")
             assert vehicle.get_button("Добавить ТС")
         with allure.step("Проверка добавления ТС"):
-            if "".join(VehicleManualFixture.__VIN) in vehicle.get_vehicle_journal():
+            if "".join(VehicleManualFixture.__param) in vehicle.get_vehicle_journal():
                 result = True
             else:
                 result = False
