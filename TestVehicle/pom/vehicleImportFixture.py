@@ -48,9 +48,13 @@ class VehicleImportFixture:
             sheet = wb.active
             sheet['B4'] = config.vehicle_dict["ИНН_Моэск"]
             sheet['C4'] = config.vehicle_dict["КПП_Моэск"]
+            sheet['D4'] = config.vehicle_dict["Марка по ПТС"]
+            sheet['E4'] = config.vehicle_dict["Модель импорт"]
+            sheet['F4'] = config.vehicle_dict["Мощность"]
+            sheet['M4'] = config.vehicle_dict["Год выпуска"]
             key = ['I4', 'J4', 'K4', 'L4']
             for i in key:
-                sheet[i] = ""
+                sheet[i] = None  # очистка ячеек
             key_parameter = choice(key)
             if key_parameter == 'L4':
                 sheet[key_parameter] = "".join((choices(config.str_rus, k=1)) + (choices(config.str_number, k=3)) +
@@ -60,16 +64,18 @@ class VehicleImportFixture:
             wb.save(config.url_file)
             wb.close()
 
-    def vehicle_file_addition(self):
+    def vehicle_file_fix(self):
         """Формирование файла с параметрами внешней системы (для проверки автодополнения)"""
         with allure.step("Формируем файл"):
-            wb = load_workbook(config.url_file_addition)
+            wb = load_workbook(config.url_file)
             sheet = wb.active
-            for i in range(3, 14):
-                key = sheet.cell(row=4, column=i)
-                sheet[key] = ""
-        with allure.step("VIN"):
+            sheet['B4'] = config.vehicle_dict["ИНН_Моэск"]
+            sheet['C4'] = config.vehicle_dict["КПП_Моэск"]
+            for i in range(4, 14):
+                sheet.cell(row=4, column=i).value = None
             sheet['I4'] = config.vehicle_dict["VIN"]
+        wb.save(config.url_file)
+        wb.close()
 
     def vehicle_close(self):
         """Закрытие формы добавления ТС"""

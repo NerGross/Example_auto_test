@@ -44,3 +44,16 @@ class TestVehicle:
         vehicle_import_fixture.vehicle_file(self)
         vehicle_import_fixture.vehicle_import(self)
         vehicle_import_fixture.vehicle_close(self)
+
+    @allure.story('Импорт ТС CС')
+    def test_import_fix(self, enter_fixture, vehicle_import_fixture):
+        """
+        Импорт ТС для CC (проверка автодополнения)
+        """
+        enter_fixture.enter_sk(self)
+        enter_fixture.transition_to_vehicle(self)
+        vehicle_import_fixture.vehicle_open(self)
+        vehicle_import_fixture.vehicle_owner(self)
+        vehicle_import_fixture.vehicle_file_fix(self)
+        vehicle_import_fixture.vehicle_import(self)
+        vehicle_import_fixture.vehicle_close(self)

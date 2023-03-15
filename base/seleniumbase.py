@@ -12,7 +12,7 @@ class SeleniumBase:
 
     def __init__(self, driver):
         self.driver = driver
-        self.__wait = WebDriverWait(driver, 30)
+        self.__wait = WebDriverWait(driver, 20)
         driver.implicitly_wait(1)
 
     @staticmethod

@@ -1,3 +1,5 @@
+from time import sleep
+
 import allure
 import config
 from datetime import datetime
@@ -7,6 +9,8 @@ from random import choices, choice
 
 class VehicleManualFixture:
     __param = choices(config.str_vin, k=17)
+    __reg_number = (choices(config.str_rus, k=1)) + (choices(config.str_number, k=3)) + (
+        choices(config.str_rus, k=2)) + (choices(config.str_number, k=3))
 
     def __init__(self):
         self.driver = None
@@ -59,9 +63,7 @@ class VehicleManualFixture:
         key_parameter = choice(["Регистрационный номер", "№ шасси", "№ кузова", "VIN"])
         if key_parameter == "Регистрационный номер":
             with allure.step("Регистрационный номер"):
-                vehicle.get__input(key_parameter).send_keys(
-                    (choices(config.str_rus, k=1)) + (choices(config.str_number, k=3)) + (
-                        choices(config.str_rus, k=2)) + (choices(config.str_number, k=3)))
+                vehicle.get__input(key_parameter).send_keys(VehicleManualFixture.__reg_number)
         else:
             with allure.step(key_parameter):
                 vehicle.get__input(key_parameter).send_keys(VehicleManualFixture.__param)
@@ -126,7 +128,8 @@ class VehicleManualFixture:
             vehicle.get_not_button("Сохранить")
             assert vehicle.get_button("Добавить ТС")
         with allure.step("Проверка добавления ТС"):
-            if "".join(VehicleManualFixture.__param) in vehicle.get_vehicle_journal():
+            if "".join(VehicleManualFixture.__param) or "".join(
+                    VehicleManualFixture.__reg_number) in vehicle.get_vehicle_journal():
                 result = True
             else:
                 result = False
