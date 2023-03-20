@@ -1,4 +1,3 @@
-from contextlib import contextmanager
 import cx_Oracle
 import config
 
@@ -39,7 +38,6 @@ class Oracle:
             self.connect.commit()
 
 
-@contextmanager
 def bd_read(sql):
     bd = None
     try:
@@ -49,11 +47,9 @@ def bd_read(sql):
     except Exception:
         raise
     finally:
-        if bd.connect:
-            bd.disconnect_node()
+        bd.disconnect_node()
 
 
-@contextmanager
 def bd_write(sql):
     bd = None
     try:
@@ -64,10 +60,3 @@ def bd_write(sql):
         raise
     finally:
         bd.disconnect_node()
-
-
-if __name__ == '__main__':
-    sql_script = "select VEHICLE_ID from MOTOR_VEHICLES_HISTORY where BRAND_BY_DOCUMENT = 'robot' or VIN_NUMBER " \
-                 "='SJNFCAP11U0465062'"
-    with bd_read(sql_script) as bd1:
-        print('SQL result: ', bd1)

@@ -17,6 +17,7 @@ class TestVehicle:
         vehicle_manual_fixture.vehicle_owner(self)
         vehicle_manual_fixture.vehicle_doc(self)
         vehicle_manual_fixture.vehicle_doc_to(self)
+        vehicle_manual_fixture.vehicle_upload_doc(self)
         vehicle_manual_fixture.vehicle_close(self)
 
     @allure.story('Ручное добавление ТС c заполнением обязательных полей для СК')

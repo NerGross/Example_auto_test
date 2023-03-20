@@ -1,4 +1,6 @@
 from selenium.webdriver.remote.webelement import WebElement
+
+import config
 from base.seleniumbase import SeleniumBase
 from base.utils import Utils
 
@@ -19,6 +21,8 @@ class VehicleLocator(SeleniumBase):
         self.__doc_vehicle_date: str = '//*[@id="vehicle-form"]/div[4]/div[2]/div/div[2]/div/div/div[1]/label/span[1]/input'
         self.__doc_TO_date: str = '//*[@id="vehicle-form"]/div[5]/div[2]/div/div[2]/div/div/div[1]/label/span[1]/input'
         self.__vehicle_journal: str = '//tbody'
+        self.__vehicle_upload_doc: str = '//span[text()="{}"]/../../input'
+        self.__vehicle_upload_result: str = '//span[text()="{}"]/../..//div/div[text()= "img.jpg"]'
 
         # импорт
         self.__upload: str = 'input[name ="file"]'
@@ -69,6 +73,14 @@ class VehicleLocator(SeleniumBase):
     def get_doc_to_date(self) -> WebElement:
         """Дата документа о регистрации """
         return self.is_visible('xpath', self.__doc_TO_date, 'doc_TO_date')
+
+    def get_vehicle_upload_doc(self, name: str) -> WebElement:
+        """Область для загрузки документов"""
+        return self.find_element('xpath', self.__vehicle_upload_doc.format(name))
+
+    def get_vehicle_upload_result(self, name: str) -> WebElement:
+        """Проверка загрузки файла"""
+        return self.is_visible('xpath', self.__vehicle_upload_result.format(name), 'vehicle_upload_result')
 
     def get_vehicle_journal(self) -> str:
         """Получаем журнал ТС -> список webElement """

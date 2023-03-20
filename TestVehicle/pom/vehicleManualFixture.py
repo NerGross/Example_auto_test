@@ -118,6 +118,27 @@ class VehicleManualFixture:
         with allure.step("Дата выдачи документа TO"):
             vehicle.get_doc_to_date().send_keys(
                 "{:02}.{:02}.{:04}".format(current_day.day, current_day.month, current_day.year))
+        with allure.step("Закрытие раздела документ на ТО"):
+            vehicle.get_accordion_chapter("Документ на ТО").click()
+
+    def vehicle_upload_doc(self):
+        """Раздел загрузки документов"""
+        vehicle = VehicleLocator(self.driver)
+        with allure.step("Открытие раздела Приложенные документы"):
+            vehicle.get_accordion_chapter("Приложенные документы").click()
+        with allure.step("Загрузка документа"):
+            vehicle.get_vehicle_upload_doc("Документы на ТС").send_keys(config.url_image)
+        with allure.step("Проверка загрузки документа"):
+            assert vehicle.get_vehicle_upload_result("Документы на ТС")
+        with allure.step("Загрузка документа"):
+            vehicle.get_vehicle_upload_doc("Документы на ТО").send_keys(config.url_image)
+        with allure.step("Проверка загрузки документа"):
+            assert vehicle.get_vehicle_upload_result("Документы на ТО")
+        with allure.step("Загрузка документа"):
+            vehicle.get_vehicle_upload_doc("Иное").send_keys(config.url_image)
+        with allure.step("Проверка загрузки документа"):
+            assert vehicle.get_vehicle_upload_result("Иное")
+
 
     def vehicle_close(self):
         """Закрытие формы добавления ТС"""
@@ -127,10 +148,14 @@ class VehicleManualFixture:
         with allure.step("Загрузки страницы журнал ТС"):
             vehicle.get_not_button("Сохранить")
             assert vehicle.get_button("Добавить ТС")
+
         with allure.step("Проверка добавления ТС"):
             if "".join(VehicleManualFixture.__param) or "".join(
                     VehicleManualFixture.__reg_number) in vehicle.get_vehicle_journal():
                 result = True
             else:
                 result = False
+                print("".join(VehicleManualFixture.__param))
+                print("".join(VehicleManualFixture.__reg_number))
+                print(vehicle.get_vehicle_journal())
             assert result == True
