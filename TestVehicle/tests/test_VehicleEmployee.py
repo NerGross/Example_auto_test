@@ -42,6 +42,7 @@ class TestVehicle:
         vehicle_import_fixture.vehicle_open(self)
         vehicle_import_fixture.vehicle_file(self)
         vehicle_import_fixture.vehicle_import(self)
+        sleep(30)
         vehicle_import_fixture.vehicle_close(self)
 
     @allure.story('Импорт ТС CС')

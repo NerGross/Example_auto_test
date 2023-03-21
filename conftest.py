@@ -37,20 +37,15 @@ def enter_fixture():
     return EnterFixture
 
 
-@pytest.fixture
-def bd_read_fixture(sql):
-    with bd.bd_read(sql) as bd1:
-        print('SQL result: ', bd1)
-
-
 @pytest.fixture(scope='function')
-def setup(request, get_webdriver, url, enter_fixture, bd_read_fixture):
+def setup(request, get_webdriver, url, enter_fixture):
     driver = get_webdriver
     url = url
     if request.cls is not None:
         request.cls.driver = driver
     driver.get(url)
     yield
-    bd_read_fixture(config.sql_script)
+    with bd.bd_write(config.sql_clear):
+        print('SQL result: clearing')
     driver.delete_all_cookies()
     driver.quit()

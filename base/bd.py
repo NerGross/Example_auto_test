@@ -1,3 +1,4 @@
+from contextlib import contextmanager
 import cx_Oracle
 import config
 
@@ -34,10 +35,11 @@ class Oracle:
     def execute_node(self, sql, commit=False):
         """Выполнение SQL"""
         self.cursor.execute(sql)
-        if commit:
+        if not commit:
             self.connect.commit()
 
 
+@contextmanager
 def bd_read(sql):
     bd = None
     try:
@@ -47,9 +49,11 @@ def bd_read(sql):
     except Exception:
         raise
     finally:
-        bd.disconnect_node()
+        if bd.connect:
+            bd.disconnect_node()
 
 
+@contextmanager
 def bd_write(sql):
     bd = None
     try:
@@ -59,4 +63,5 @@ def bd_write(sql):
     except Exception:
         raise
     finally:
-        bd.disconnect_node()
+        if bd.connect:
+            bd.disconnect_node()
