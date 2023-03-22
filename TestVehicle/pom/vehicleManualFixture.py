@@ -1,5 +1,3 @@
-from time import sleep
-
 import allure
 import config
 from datetime import datetime
@@ -139,7 +137,6 @@ class VehicleManualFixture:
         with allure.step("Проверка загрузки документа"):
             assert vehicle.get_vehicle_upload_result("Иное")
 
-
     def vehicle_close(self):
         """Закрытие формы добавления ТС"""
         vehicle = VehicleLocator(self.driver)
@@ -152,6 +149,9 @@ class VehicleManualFixture:
         with allure.step("Проверка добавления ТС"):
             if "".join(VehicleManualFixture.__param) or "".join(
                     VehicleManualFixture.__reg_number) in vehicle.get_vehicle_journal():
+                print("".join(VehicleManualFixture.__param))
+                print("".join(VehicleManualFixture.__reg_number))
+                print(vehicle.get_vehicle_journal())
                 result = True
             else:
                 result = False
