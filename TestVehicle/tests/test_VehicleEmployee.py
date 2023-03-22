@@ -55,3 +55,4 @@ class TestVehicle:
         vehicle_import_fixture.vehicle_file_fix(self)
         vehicle_import_fixture.vehicle_import(self)
         vehicle_import_fixture.vehicle_close(self)
+        vehicle_import_fixture.vehicle_clear(self)
