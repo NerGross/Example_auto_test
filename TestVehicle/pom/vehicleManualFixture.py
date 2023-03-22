@@ -4,11 +4,11 @@ from datetime import datetime
 from TestVehicle.pom.vehicleLocator import VehicleLocator
 from random import choices, choice
 
+from base.valueChoice import ValueChoice
+
 
 class VehicleManualFixture:
-    __param = choices(config.str_vin, k=17)
-    __reg_number = (choices(config.str_rus, k=1)) + (choices(config.str_number, k=3)) + (
-        choices(config.str_rus, k=2)) + (choices(config.str_number, k=3))
+    s = None
 
     def __init__(self):
         self.driver = None
@@ -27,6 +27,8 @@ class VehicleManualFixture:
     def vehicle(self):
         """Раздел "ТС"""
         vehicle = VehicleLocator(self.driver)
+        params = ValueChoice().params()
+        global s
         with allure.step("Марка"):
             vehicle.get_drop_down("Марка").click()
             vehicle.get_drop_down_find().send_keys(config.vehicle_dict["Марка"])
@@ -58,15 +60,12 @@ class VehicleManualFixture:
         with allure.step("Год выпуска"):
             current_day = datetime.now()
             vehicle.get__input("Год выпуска").send_keys(current_day.year)
-        key_parameter = choice(["Регистрационный номер", "№ шасси", "№ кузова", "VIN"])
-        if key_parameter == "Регистрационный номер":
-            with allure.step("Регистрационный номер"):
-                vehicle.get__input(key_parameter).send_keys(VehicleManualFixture.__reg_number)
-        else:
-            with allure.step(key_parameter):
-                vehicle.get__input(key_parameter).send_keys(VehicleManualFixture.__param)
+        with allure.step("Ключевой параметр"):
+            print('1', params)
+            vehicle.get__input(params[0]).send_keys(params[1])
         with allure.step("Закрытие раздела ТС"):
             vehicle.get_accordion_chapter("Транспортное средство").click()
+        s = params[1]
 
     def vehicle_owner(self):
         """Раздел "Страхователь"""
@@ -145,17 +144,11 @@ class VehicleManualFixture:
         with allure.step("Загрузки страницы журнал ТС"):
             vehicle.get_not_button("Сохранить")
             assert vehicle.get_button("Добавить ТС")
-
-        with allure.step("Проверка добавления ТС"):
-            if "".join(VehicleManualFixture.__param) or "".join(
-                    VehicleManualFixture.__reg_number) in vehicle.get_vehicle_journal():
-                print("".join(VehicleManualFixture.__param))
-                print("".join(VehicleManualFixture.__reg_number))
-                print(vehicle.get_vehicle_journal())
-                result = True
-            else:
-                result = False
-                print("".join(VehicleManualFixture.__param))
-                print("".join(VehicleManualFixture.__reg_number))
-                print(vehicle.get_vehicle_journal())
-            assert result == True
+        print(s)
+        # with allure.step("Проверка добавления ТС"):
+        #     print('2', self.params[1])
+        #     if self.params[1] in vehicle.get_vehicle_journal():
+        #         result = True
+        #     else:
+        #         result = False
+        #     assert result == True

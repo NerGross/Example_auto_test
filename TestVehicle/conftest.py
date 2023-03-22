@@ -11,3 +11,5 @@ def vehicle_manual_fixture():
 @pytest.fixture(scope="function")
 def vehicle_import_fixture():
     return VehicleImportFixture
+
+

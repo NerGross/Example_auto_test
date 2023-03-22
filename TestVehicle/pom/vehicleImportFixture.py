@@ -1,11 +1,11 @@
 import allure
+import pytest
 import config
 from TestVehicle.pom.vehicleLocator import VehicleLocator
 from random import choices, choice
 from openpyxl import load_workbook
 
 from base import bd
-
 
 class VehicleImportFixture:
 

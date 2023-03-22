@@ -4,7 +4,7 @@ from selenium import webdriver
 from TestEnter.pom.enterFixture import EnterFixture
 from selenium.webdriver.chrome.options import Options as ChromeOptions
 from selenium.webdriver.chrome.service import Service
-from base import bd
+from base.valueChoice import ValueChoice
 
 
 @pytest.fixture
@@ -33,11 +33,6 @@ def url(request):
 
 
 @pytest.fixture(scope='function')
-def enter_fixture():
-    return EnterFixture
-
-
-@pytest.fixture(scope='function')
 def setup(request, get_webdriver, url, enter_fixture):
     driver = get_webdriver
     url = url
@@ -47,3 +42,14 @@ def setup(request, get_webdriver, url, enter_fixture):
     yield
     driver.delete_all_cookies()
     driver.quit()
+
+
+# далее общие фикстуры
+@pytest.fixture(scope='function')
+def enter_fixture():
+    return EnterFixture
+
+
+@pytest.fixture(scope="function")
+def value_choice_fixture():
+    return ValueChoice

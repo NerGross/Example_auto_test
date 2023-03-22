@@ -27,6 +27,10 @@ class Oracle:
         except cx_Oracle.DatabaseError:
             raise
 
+    def __del__(self):
+        if self.connect is not None:
+            self.disconnect_node()
+
     def fetchall_node(self, sql):
         """Запрос в SQL"""
         self.cursor.execute(sql)
@@ -49,7 +53,7 @@ def bd_read(sql):
     except Exception:
         raise
     finally:
-        if bd.connect:
+        if bd.connect is not None:
             bd.disconnect_node()
 
 
@@ -63,5 +67,5 @@ def bd_write(sql):
     except Exception:
         raise
     finally:
-        if bd.connect:
+        if bd.connect is not None:
             bd.disconnect_node()
