@@ -34,38 +34,4 @@ class Utils:
             if key.text.lower() == name:
                 return value
 
-    @staticmethod
-    def sql_clear(sql):
-        try:
-            with cx_Oracle.connect(user=config.db_config["user"], password=config.db_config["password"],
-                                   dsn=config.db_config["dsn"], encoding='utf8') as connection:
-                print('SQL: ', sql)
-                print("Connection to MySQL DB successful")
-                with connection.cursor() as cursor:
-                    cursor.execute(sql)
-                    connection.commit()
-                    cursor.close()
-                    connection.close()
-                    print("Connection to MySQL DB closed")
 
-        except cx_Oracle.Error as e:
-            print(e)
-
-    @staticmethod
-    def sql_script(sql: str):
-        try:
-            with cx_Oracle.connect(user=config.db_config["user"], password=config.db_config["password"],
-                                   dsn=config.db_config["dsn"], encoding='utf8') as connection:
-                print('SQL: ', sql)
-                print("Connection to MySQL DB successful")
-                with connection.cursor() as cursor:
-                    cursor.execute(sql)
-                    result = cursor.fetchall()
-                    cursor.close()
-                    connection.close()
-                    print("Connection to MySQL DB closed")
-                    print(result)
-                    return 'sql = ', result
-
-        except cx_Oracle.Error as error:
-            print(error)

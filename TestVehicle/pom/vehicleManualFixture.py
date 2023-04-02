@@ -3,12 +3,11 @@ import config
 from datetime import datetime
 from TestVehicle.pom.vehicleLocator import VehicleLocator
 from random import choices, choice
-
 from base.valueChoice import ValueChoice
 
 
 class VehicleManualFixture:
-    s = None
+    param = None
 
     def __init__(self):
         self.driver = None
@@ -28,7 +27,6 @@ class VehicleManualFixture:
         """Раздел "ТС"""
         vehicle = VehicleLocator(self.driver)
         params = ValueChoice().params()
-        global s
         with allure.step("Марка"):
             vehicle.get_drop_down("Марка").click()
             vehicle.get_drop_down_find().send_keys(config.vehicle_dict["Марка"])
@@ -61,11 +59,10 @@ class VehicleManualFixture:
             current_day = datetime.now()
             vehicle.get__input("Год выпуска").send_keys(current_day.year)
         with allure.step("Ключевой параметр"):
-            print('1', params)
             vehicle.get__input(params[0]).send_keys(params[1])
         with allure.step("Закрытие раздела ТС"):
             vehicle.get_accordion_chapter("Транспортное средство").click()
-        s = params[1]
+        self.param = params
 
     def vehicle_owner(self):
         """Раздел "Страхователь"""
@@ -144,11 +141,11 @@ class VehicleManualFixture:
         with allure.step("Загрузки страницы журнал ТС"):
             vehicle.get_not_button("Сохранить")
             assert vehicle.get_button("Добавить ТС")
-        print(s)
-        # with allure.step("Проверка добавления ТС"):
-        #     print('2', self.params[1])
-        #     if self.params[1] in vehicle.get_vehicle_journal():
-        #         result = True
-        #     else:
-        #         result = False
-        #     assert result == True
+        with allure.step("Проверка добавления ТС"):
+            print(self.param[1])
+            if self.param[1] in vehicle.get_vehicle_journal():
+                result = True
+            else:
+                result = False
+            print(result)
+            # assert result == True
