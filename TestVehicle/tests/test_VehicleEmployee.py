@@ -1,6 +1,5 @@
 import allure
 import pytest
-from time import sleep
 
 
 @pytest.mark.usefixtures('setup')

@@ -79,6 +79,7 @@ class VehicleManualFixture:
         """Раздел "Документа на ТС"""
         vehicle = VehicleLocator(self.driver)
         current_day = datetime.now()
+        vehicle_doc = ValueChoice().vehicle_doc()
         with allure.step("Открытие раздела документ на  ТС"):
             vehicle.get_accordion_chapter("Документ на ТС").click()
         with allure.step("Тип документа TC"):
@@ -87,9 +88,9 @@ class VehicleManualFixture:
             vehicle.get_drop_down_find().send_keys('\n')
             vehicle.get_drop_down_meaning(config.vehicle_dict["Тип документа TC"]).click()
         with allure.step('Серия документа о регистрации'):
-            vehicle.get_doc_vehicle_series().send_keys(choices(config.str_number, k=2) + choices(config.str_rus, k=2))
+            vehicle.get_doc_vehicle_series().send_keys(vehicle_doc[0])
         with allure.step('Номер документа о регистрации'):
-            vehicle.get_doc_vehicle_number().send_keys(choices(config.str_number, k=6))
+            vehicle.get_doc_vehicle_number().send_keys(vehicle_doc[1])
         with allure.step('Номер документа о регистрации'):
             vehicle.get_doc_vehicle_date().send_keys(
                 "{:02}.{:02}.{:04}".format(current_day.day, current_day.month, current_day.year))
@@ -99,6 +100,7 @@ class VehicleManualFixture:
     def vehicle_doc_to(self):
         """Раздел "Документа ны ТО"""
         vehicle = VehicleLocator(self.driver)
+        vehicle_doc_to = ValueChoice().vehicle_doc_to()
         current_day = datetime.now()
         with allure.step("Открытие раздела документ на  ТО"):
             vehicle.get_accordion_chapter("Документ на ТО").click()
@@ -108,7 +110,7 @@ class VehicleManualFixture:
             vehicle.get_drop_down_find().send_keys('\n')
             vehicle.get_drop_down_meaning(config.vehicle_dict["Тип документа TO"]).click()
         with allure.step("Номер документа TO"):
-            vehicle.get__input("Номер документа TO").send_keys(choices(config.str_number, k=21))
+            vehicle.get__input("Номер документа TO").send_keys(vehicle_doc_to)
         with allure.step("Дата выдачи документа TO"):
             vehicle.get_doc_to_date().send_keys(
                 "{:02}.{:02}.{:04}".format(current_day.day, current_day.month, current_day.year))
@@ -142,10 +144,8 @@ class VehicleManualFixture:
             vehicle.get_not_button("Сохранить")
             assert vehicle.get_button("Добавить ТС")
         with allure.step("Проверка добавления ТС"):
-            print(self.param[1])
-            if self.param[1] in vehicle.get_vehicle_journal():
+            if self.param[1].upper() in vehicle.get_vehicle_journal():
                 result = True
             else:
                 result = False
-            print(result)
-            # assert result == True
+            assert result == True
