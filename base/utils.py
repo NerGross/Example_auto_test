@@ -1,6 +1,4 @@
 from selenium.webdriver.remote.webelement import WebElement
-import cx_Oracle
-import config
 
 
 class Utils:
@@ -33,5 +31,3 @@ class Utils:
         for key, value in elements.items():
             if key.text.lower() == name:
                 return value
-
-

@@ -1,11 +1,10 @@
 import allure
-import pytest
 import config
 from TestVehicle.pom.vehicleLocator import VehicleLocator
 from random import choices, choice
 from openpyxl import load_workbook
+from base.valueChoice import ValueChoice
 
-from base import bd
 
 class VehicleImportFixture:
 
@@ -89,8 +88,3 @@ class VehicleImportFixture:
             assert vehicle.get_button("К списку ТС")
         with allure.step("Проверка добавления ТС"):
             assert vehicle.get_upload_stat() == vehicle.UPLOAD_STAT
-
-    def vehicle_clear(self):
-        """Закрытие формы добавления ТС"""
-        with bd.bd_write(config.sql_clear):
-            print('SQL result: clearing')

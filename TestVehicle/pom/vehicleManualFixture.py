@@ -2,7 +2,6 @@ import allure
 import config
 from datetime import datetime
 from TestVehicle.pom.vehicleLocator import VehicleLocator
-from random import choices, choice
 from base.valueChoice import ValueChoice
 
 

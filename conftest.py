@@ -4,6 +4,7 @@ from selenium import webdriver
 from TestEnter.pom.enterFixture import EnterFixture
 from selenium.webdriver.chrome.options import Options as ChromeOptions
 from selenium.webdriver.chrome.service import Service
+from base import bd
 from base.valueChoice import ValueChoice
 
 
@@ -40,6 +41,8 @@ def setup(request, get_webdriver, url, enter_fixture):
         request.cls.driver = driver
     driver.get(url)
     yield
+    with bd.bd_write(config.sql_clear):
+        print('SQL result: clearing')
     driver.delete_all_cookies()
     driver.quit()
 
