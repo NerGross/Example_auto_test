@@ -46,3 +46,11 @@ class EnterFixture:
             enter.get_menu("Транспортные средства").click()
         # with allure.step("Транспортные средства"):
         #    enter.get_not_drop_down_meaning("Страхование ТС")
+
+    def transition_to_orders(self):
+        enter = EnterLocator(self.driver)
+        with allure.step('Переход по меню'):
+            enter.get_menu("Заказы").click()
+            enter.get_menu("Список заказов").click()
+        # with allure.step("Транспортные средства"):
+        #    enter.get_not_drop_down_meaning("Страхование ТС")
