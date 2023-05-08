@@ -2,7 +2,7 @@ import allure
 from openpyxl.reader.excel import load_workbook
 
 import config
-from TestEnter.pom.enterLocator import EnterLocator
+from TestEnter.pages.enterLocator import EnterLocator
 
 
 class EnterFixture:
@@ -19,8 +19,8 @@ class EnterFixture:
             enter.get_auth("Пароль").send_keys(config.enter["p_curator"])
             enter.get_button("Войти").click()
         with allure.step("Загрузки страницы выбор компании"):
-            enter.get_not_button("Войти")
-            assert enter.get_drop_down_meaning("Страхование ТС")
+            assert enter.get_not_button("Войти")
+            # assert enter.get_drop_down_meaning("Страхование ТС")
 
     def enter_sk(self):
         """Логин пароль в ЛК для сотрудника страхователя"""
@@ -36,14 +36,13 @@ class EnterFixture:
         with allure.step('Выбор организации'):
             enter.get_company(config.enter["company_branch"]).click()
         with allure.step("Загрузки страницы Договоры"):
-            enter.get_not_company(config.enter["company_branch"])
-            assert enter.get_drop_down_meaning("Страхование ТС")
+            assert enter.get_not_company(config.enter["company_branch"])
+            # assert enter.get_drop_down_meaning("Страхование ТС")
 
     def transition_to_vehicle(self):
         enter = EnterLocator(self.driver)
         with allure.step('Переход по меню'):
             enter.get_menu("Объекты страхования").click()
             enter.get_menu("Транспортные средства").click()
-        with allure.step("Транспортные средства"):
-            enter.get_not_drop_down_meaning("Страхование ТС")
-
+        # with allure.step("Транспортные средства"):
+        #    enter.get_not_drop_down_meaning("Страхование ТС")

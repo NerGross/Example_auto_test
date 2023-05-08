@@ -1,6 +1,6 @@
 import allure
 import config
-from TestVehicle.pom.vehicleLocator import VehicleLocator
+from TestVehicle.pages.vehicleLocator import VehicleLocator
 from random import choices, choice
 from openpyxl import load_workbook
 from base.valueChoice import ValueChoice

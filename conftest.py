@@ -1,7 +1,7 @@
 import pytest
 import config
 from selenium import webdriver
-from TestEnter.pom.enterFixture import EnterFixture
+from TestEnter.pages.enterFixture import EnterFixture
 from selenium.webdriver.chrome.options import Options as ChromeOptions
 from selenium.webdriver.chrome.service import Service
 from base import bd

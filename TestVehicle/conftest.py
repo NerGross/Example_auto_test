@@ -1,6 +1,6 @@
 import pytest
-from TestVehicle.pom.vehicleImportFixture import VehicleImportFixture
-from TestVehicle.pom.vehicleManualFixture import VehicleManualFixture
+from TestVehicle.pages.vehicleImportFixture import VehicleImportFixture
+from TestVehicle.pages.vehicleManualFixture import VehicleManualFixture
 
 
 @pytest.fixture(scope="function")
